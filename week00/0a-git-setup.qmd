@@ -12,7 +12,7 @@ format:
     logo: "https://www.introdata.science/img/logo.png"
     title-slide-attributes: 
       data-background-image: "https://www.introdata.science/img/logo.png"
-      data-background-size: 15%
+      data-background-size: 12%
       data-background-position: 50% 85%
     include-after-body: "../templates/clean_title_page.html"
 ---
