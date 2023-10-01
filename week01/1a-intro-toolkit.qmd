@@ -1,0 +1,502 @@
+---
+title: "Introduction to the Toolkit"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+```{r}
+#| echo: false
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+```
+
+# Getting to Know Each Other
+
+## Merhaba
+
+Hello\
+`Private Sub Form_Load() MsgBox "Hello, World!" End Sub`\
+Hallo\
+مرحبا\
+`print('Hello world')`\
+नमस्ते & السلام عليكم\
+`print("Hello world")`\
+`<html> Hello world</html>`\
+¡Hola!\
+سلام
+
+## Meet and Greet Each Other
+
+In groups three or four meet and greet each other.
+
+Include
+
+Your name\
+Your year\
+I live ...\
+My favorite thing about UCI is ...\
+I am awesome because ...
+
+Find something in common between all of you by expanding the conversation.\
+Find a difference.
+
+# Getting to Know the Course
+
+## 
+
+::: font100
+The most important thing about this course
+:::
+
+[The course website](https://introdata.science)
+
+## What is Data Science?
+
+> Data science is an interdisciplinary academic field that uses statistics, scientific computing, scientific methods, processes, algorithms and systems to extract or extrapolate knowledge and insights from noisy, structured, and unstructured data. Wikipedia
+
+## What is Data Science?
+
+
+> Data science also integrates domain knowledge from the underlying application domain (e.g., natural sciences, information technology, and medicine). Data science is multifaceted and can be described as a science, a research paradigm, a research method, a discipline, a workflow, and a profession. Wikipedia
+
+##
+
+**What types of data will we use in this course** 
+
+We will use a variety of datasets from biological studies to business answering questions serving different purposes in life. Data will come different size, shape, and form and will include numbers, categories, text etc.
+
+
+
+##
+
+**Is this a statistics course or a computing course?**
+
+A little bit of both. 
+
+. . .
+
+**Do I need prior programming/statistics experience?**
+
+No
+
+
+
+## Example work by students
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+knitr::include_graphics("img/student-example2.png")
+```
+
+## How to be successful in this course
+
+- Be punctual
+- Be organized
+- Do the work
+
+## How to make your professor happy
+
+- Be kind
+- Be honest
+
+
+# Getting to Know the Toolbox
+
+## hello woRld
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/01a-hello-world.mp4" type="video/mp4">
+</video>
+
+</center>
+
+## Object assignment operator
+
+```{r}
+my_apples <- 4
+```
+
+
+. . .
+
+|                            | Windows        | Mac              |
+|----------------------------|----------------|------------------|
+| Shortcut     | Alt + -        | Option + -       |
+
+
+## R is case-sensitive
+
+
+```{r}
+#| error: true
+My_apples <- 2020 - birth_year
+
+My_apples
+```
+
+##
+
+If something comes in quotes, it is not defined in R. 
+
+
+```{r}
+
+n_apples <- c(7, my_apples, 3)
+
+names <- c("Menglin", "Gloria", "Robert")
+
+data.frame(person = names, apple_count = n_apples)
+```
+
+
+## Vocabulary
+
+```{r eval=FALSE}
+do(something)
+```
+
+`do()` is a function;   
+`something` is the argument of the function.
+
+. . .
+
+```{r eval=FALSE}
+do(something, colorful)
+```
+
+`do()` is a function;   
+`something` is the first argument of the function;   
+`colorful` is the second argument of the function.
+
+
+
+## Getting Help
+
+In order to get any help we can use `?` followed by function (or object) name. 
+
+```{r eval=FALSE}
+?c
+```
+
+
+## tidyverse_style_guide
+
+>canyoureadthissentence?
+
+## tidyverse_style_guide
+
+:::: {.columns}
+
+::: {.column width="40%"}
+```{r eval = FALSE}
+n_apples <- c(7, my_apples, 3)
+
+names <- c("Menglin", "Gloria", "Robert")
+
+data.frame(person = names, 
+           apple_count = n_apples)
+```
+:::
+
+::: {.column width="60%"}
+- After function names do not leave any spaces.
+
+- Before and after operators (e.g. <-, =) leave spaces. 
+
+- Put a space after a comma, **not** before. 
+
+- Object names are all lower case, with words separated by an underscore.
+
+:::
+
+::::
+    
+
+## RStudio Setup
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/01b-rstudio-setup.mp4" type="video/mp4">
+</video>
+
+</center>
+
+## Quarto
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/01c-intro-quarto.mov" type="video/mp4">
+</video>
+
+</center>
+
+
+## markdown `r fontawesome::fa(name = "markdown")`
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+```
+
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+```
+:::
+
+::: {.column width="60%"}
+_Hello world_ 
+
+__Hello world__
+
+~~Hello world~~ 
+:::
+
+::::
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.001.png")
+```
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.002.png")
+```
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.003.png")
+```
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.004.png")
+```
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.005.png")
+```
+
+## Quarto parts
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/quarto.006.png")
+```
+
+# Getting to Know Data
+
+[Dear Mona, Which State Has the Worst Drivers?](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/)
+
+```{r}
+library(fivethirtyeight)
+library(tidyverse)
+data("bad_drivers")
+```
+
+## Data Matrices  
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/data-matrix.png')
+knitr::include_graphics('img/data-matrix-tail.png')
+```
+
+## Data Matrices
+
+- The data matrix has `r ncol(bad_drivers)` __variables__ (state, num_drivers, perc_speeding, perc_not_distracted, perc_no_previous, insurance_premiums, losses). 
+
+- The data matrix has `r nrow(bad_drivers)` __cases__ or __observations__. Each case represents a US state (or District of Columbia). 
+
+## Data documentation
+
+```{r}
+?bad_drivers
+```
+
+`state` State
+
+`num_drivers` Number of drivers involved in fatal collisions per billion miles
+
+`perc_speeding` Percentage of drivers involved in fatal collisions who were speeding
+
+`perc_alcohol` Percentage of drivers involved in fatal collisions who were alcohol-impaired
+
+`perc_not_distracted` Percentage of drivers involved in fatal collisions who were not distracted
+
+##
+
+`perc_no_previous` Percentage of drivers involved in fatal collisions who had not been involved in any previous accidents
+
+`insurance_premiums` Car insurance premiums ($)
+
+`losses` Losses incurred by insurance companies for collisions per insured driver ($)
+
+`Source` National Highway Traffic Safety Administration 2012, National Highway Traffic Safety Administration 2009 & 2012, National Association of Insurance Commissioners 2010 & 2011.
+
+##
+
+```{r}
+head(bad_drivers)
+```
+
+## 
+
+```{r}
+tail(bad_drivers)
+```
+
+##
+
+```{r}
+glimpse(bad_drivers)
+```
+
+
+## Variables
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/data-candy.png')
+knitr::include_graphics('img/data-candy-tail.png')
+```
+
+
+
+## Variables
+
+Variables `sugarpercent`, `pricepercent`, and `winpercent` are __numerical variables__. 
+
+We can do certain analyses on these variables such as finding an average `winpercent` or the maximum or minimum `winpercent`.
+
+Note: Not everything represented by numbers is a numeric variable. e.g. Student ID number is not a numeric variable.
+
+
+
+## Variables
+
+
+Variables such as `competitorname`, `chocolate`, and `fruity` are __categorical variables__. 
+
+We cannot take averages or find maximum or minimum of these variables. 
+
+Categorical variables have __levels__. For instance `chocolate` and `fruity` both have two levels as `TRUE` and `FALSE`. 
+
+
+```{r echo = FALSE, fig.align='center'}
+diagram_small <- grViz("
+    digraph {
+        # graph aesthetics
+        graph [ranksep = 0.3]
+
+        # node definitions with substituted label text
+        1 [label = 'Variables']
+        2 [label = 'Categorical']
+        3 [label = 'Numeric']
+
+        
+        # edge definitions with the node IDs
+        1 -> 2
+        1 -> 3
+
+    }
+")
+
+tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram_small)),'img/diagram_small.png'))
+
+knitr::include_graphics("img/diagram_small.png") 
+
+```
+
+
+## Categorical Variables
+
+If the levels of the categorical variable has a comparable ordering then it is called an __ordinal variable__. 
+
+e.g. variable scholarship_status might have three levels as no scholarship, partial scholarship and full scholarship. We can order these levels from less to more or vice versa. 
+
+If there is no ordering then a categorical variable would be called a __nominal variable__. e.g. state names.
+
+
+
+## Numeric Variables
+
+Consider a variable `n_kids` which represents number of kids somebody has. Then this variable can take values (0, 1, 2, ...). Notice that this variable can take only integer values. This variable is said to be __discrete__ since it does not take on  infinitely many numbers that we are not able to count. 
+
+
+Numeric variables that can take infinitely many numbers are said to be __continuous__. Consider somebody's height in cm. This is a continuous variable. Even though we might say somebody is 173 cm, in reality the height could be 170.612476314631 cm. So height can take infinitely many values. 
+
+##
+
+```{r echo = FALSE, fig.align='center'}
+#| echo: false
+#| fig-align: center
+#| out-width: 80%
+diagram <- grViz("
+    digraph {
+        # graph aesthetics
+        graph [ranksep = 0.3]
+
+        # node definitions with substituted label text
+        1 [label = 'Variables']
+        2 [label = 'Categorical']
+        3 [label = 'Numeric']
+        4 [label = 'Nominal']
+        5 [label = 'Ordinal']
+        6 [label = 'Discrete']
+        7 [label = 'Continuous']
+
+        
+        # edge definitions with the node IDs
+        1 -> 2
+        1 -> 3
+        2 -> 4
+        2 -> 5
+        3 -> 6
+        3 -> 7
+    }
+")
+
+tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram)),'img/diagram.png'))
+
+knitr::include_graphics("img/diagram.png") 
+
+```
+
+
+
+
+
