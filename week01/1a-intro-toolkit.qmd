@@ -64,6 +64,23 @@ The most important thing about this course
 
 [The course website](https://introdata.science)
 
+## Poll Everywhere
+
+:::{.font75}
+[PollEv.com/minedogucu800](https://pollev.com/minedogucu800)
+
+:::
+
+## What is Data Science?
+
+Think 💭 - Pair 👫🏽 - Share 💬
+
+What do you think data science is about and what will we learn in this course? There is no right or wrong answer.
+
+:::{.font75}
+[PollEv.com/minedogucu800](https://pollev.com/minedogucu800)
+
+
 ## What is Data Science?
 
 > Data science is an interdisciplinary academic field that uses statistics, scientific computing, scientific methods, processes, algorithms and systems to extract or extrapolate knowledge and insights from noisy, structured, and unstructured data. Wikipedia
@@ -79,8 +96,6 @@ The most important thing about this course
 
 We will use a variety of datasets from biological studies to business answering questions serving different purposes in life. Data will come different size, shape, and form and will include numbers, categories, text etc.
 
-
-
 ##
 
 **Is this a statistics course or a computing course?**
@@ -92,7 +107,6 @@ A little bit of both.
 **Do I need prior programming/statistics experience?**
 
 No
-
 
 
 ## Example work by students
@@ -196,6 +210,12 @@ In order to get any help we can use `?` followed by function (or object) name.
 ?c
 ```
 
+##
+
+::: callout-tip
+You should not copy paste code from my slides or from the internet. 
+Part of learning to code is building up your muscle memory. 
+:::
 
 ## tidyverse_style_guide
 
@@ -228,6 +248,14 @@ data.frame(person = names,
 :::
 
 ::::
+
+##
+
+::: callout-tip
+
+You can let RStudio do the indentation for your code.
+
+:::
     
 
 ## RStudio Setup
@@ -436,11 +464,12 @@ We have actually done something similar to this demo before [by cloning the test
 ## 
 
 
-::: {.font75}
+::: callout-tip
+## Tip
 
-Always use .Rproj file to open projects. Then open the appropriate .qmd / .R file from the Files pane.
-
+Always use `.Rproj` file to open projects. Then open the appropriate `.qm`d / `.R` file from the Files pane. If you don't open `.Rproj` file you will not be able to see the Git pane.
 :::
+
 
 ## Cloning a repo
 
