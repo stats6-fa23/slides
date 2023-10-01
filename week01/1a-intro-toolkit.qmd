@@ -319,184 +319,179 @@ knitr::include_graphics("img/quarto.005.png")
 knitr::include_graphics("img/quarto.006.png")
 ```
 
-# Getting to Know Data
+## Slides for this course
 
-[Dear Mona, Which State Has the Worst Drivers?](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/)
-
-```{r}
-library(fivethirtyeight)
-library(tidyverse)
-data("bad_drivers")
-```
-
-## Data Matrices  
-
-```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('img/data-matrix.png')
-knitr::include_graphics('img/data-matrix-tail.png')
-```
-
-## Data Matrices
-
-- The data matrix has `r ncol(bad_drivers)` __variables__ (state, num_drivers, perc_speeding, perc_not_distracted, perc_no_previous, insurance_premiums, losses). 
-
-- The data matrix has `r nrow(bad_drivers)` __cases__ or __observations__. Each case represents a US state (or District of Columbia). 
-
-## Data documentation
-
-```{r}
-?bad_drivers
-```
-
-`state` State
-
-`num_drivers` Number of drivers involved in fatal collisions per billion miles
-
-`perc_speeding` Percentage of drivers involved in fatal collisions who were speeding
-
-`perc_alcohol` Percentage of drivers involved in fatal collisions who were alcohol-impaired
-
-`perc_not_distracted` Percentage of drivers involved in fatal collisions who were not distracted
+Slides that you are currently looking at are also written in Quarto. You can take a look at them on our course's [GitHub organization](https://github.com/stats6-fa23) in the slides repo.
 
 ##
 
-`perc_no_previous` Percentage of drivers involved in fatal collisions who had not been involved in any previous accidents
+::: {.incremental}
 
-`insurance_premiums` Car insurance premiums ($)
+Does this look familiar?
 
-`losses` Losses incurred by insurance companies for collisions per insured driver ($)
+- hw1
 
-`Source` National Highway Traffic Safety Administration 2012, National Highway Traffic Safety Administration 2009 & 2012, National Association of Insurance Commissioners 2010 & 2011.
+- hw1_final
+
+- hw1_final2
+
+- hw1_final3
+
+- hw1_finalwithfinalimages
+
+- hw1_finalestfinal
+
+:::
+
+
+##
+
+::: {.incremental}
+
+What if we tracked our file with a better names for each version and have only 1 file **hw1**?
+
+
+- hw1 ***added questions 1 through 5***
+
+- hw1 ***changed question 1 image***
+
+- hw1 ***fixed typos***
+
+
+We will call the descriptions in italic **commit** messages.
+
+:::
+
+
+## git vs. GitHub
+
+- git allows us to keep track of different versions of a file(s).
+
+- GitHub is a website where we can store (and share) different versions of the files. 
 
 ##
 
 ```{r}
-head(bad_drivers)
+#| out.width: '40%'
+#| fig.align: 'center' 
+#| echo: false
+knitr::include_graphics('img/github-illustration.002.jpeg')
+```
+
+##
+
+```{r}
+#| out.width: '55%'
+#| fig.align: 'center'
+#| echo: false
+knitr::include_graphics('img/github-illustration.003.jpeg')
+```
+
+##
+
+```{r}
+#| out.width: '55%'
+#| fig.align: 'center'
+#| echo: false
+knitr::include_graphics('img/github-illustration.004.jpeg')
+```
+
+##
+
+```{r}
+#| out.width: '55%'
+#| fig.align: 'center'
+#| echo: false
+knitr::include_graphics('img/github-illustration.005.jpeg')
+```
+
+##
+
+```{r}
+#| out.width: '55%'
+#| fig.align: 'center'
+#| echo: false
+knitr::include_graphics('img/github-illustration.006.jpeg')
+```
+
+##
+
+```{r}
+#| out.width: '55%'
+#| fig.align: 'center'
+#| echo: false
+knitr::include_graphics('img/github-illustration.007.jpeg')
 ```
 
 ## 
 
-```{r}
-tail(bad_drivers)
-```
+::: {.font75}
+
+Demo
+
+:::
+
+We have actually done something similar to this demo before [by cloning the test repo and committing, and pushing](https://uci.yuja.com/V/Video?v=8768277&node=37883581&a=136650542&autoplay=1). 
+
+## 
+
+
+::: {.font75}
+
+Always use .Rproj file to open projects. Then open the appropriate .qmd / .R file from the Files pane.
+
+:::
+
+## Cloning a repo
+
+**repo** is a short form of repository. Repositories contain all of your project's files as well as each file's revision history.
+
+For this course our daily repos (lecture code, activity etc.) are hosted on Github. 
+
+To **clone** a GitHub repo to our computer, we first copy the cloning link as shown in screencast then start an RStudio project using that link.  
+
+**Cloning** a repo pulls (downloads) all the elements of a repo available at that specific time. 
+
+
+
+## Commits
+
+Once you make changes to your repo (e.g. take notes during lecture, answer an activity question) you can take a snapshot of your changes with a commit.
+
+This way if you ever have to go back in version history you have your older commits to get back to. 
+
+This is especially useful, for instance, if you want to go back to an earlier solution you have committed.
+
+
+
+## Push
+
+All the commits you make will initially be local (i.e. on your own computer). 
+
+In order for us to see your commits and your final submission on any file, you have to **push** your commits. In other words upload your files at the stage in that specific time.
+
+
+
+
+## (An incomplete) Git/GitHub glossary
+
+**Git:** is software for tracking changes in any set of files
+
+**GitHub:** is an internet host for Git projects.
+
+**repo:** is a short form of repository. Repositories contain all of your project's files as well as each file's revision history.
+
+**clone:** Cloning a repo **pulls** (downloads) all the elements of a repo available at that specific time. 
+
+**commit:** A snapshot of your repo at a specific point in time. We distinguish each commit with a **commit message**. 
+
+**push:** Uploads the latest "committed" state of your repo to GitHub.
 
 ##
 
-```{r}
-glimpse(bad_drivers)
-```
+::: {.font150} 
 
+Do you git it?
 
-## Variables
-
-```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('img/data-candy.png')
-knitr::include_graphics('img/data-candy-tail.png')
-```
-
-
-
-## Variables
-
-Variables `sugarpercent`, `pricepercent`, and `winpercent` are __numerical variables__. 
-
-We can do certain analyses on these variables such as finding an average `winpercent` or the maximum or minimum `winpercent`.
-
-Note: Not everything represented by numbers is a numeric variable. e.g. Student ID number is not a numeric variable.
-
-
-
-## Variables
-
-
-Variables such as `competitorname`, `chocolate`, and `fruity` are __categorical variables__. 
-
-We cannot take averages or find maximum or minimum of these variables. 
-
-Categorical variables have __levels__. For instance `chocolate` and `fruity` both have two levels as `TRUE` and `FALSE`. 
-
-
-```{r echo = FALSE, fig.align='center'}
-diagram_small <- grViz("
-    digraph {
-        # graph aesthetics
-        graph [ranksep = 0.3]
-
-        # node definitions with substituted label text
-        1 [label = 'Variables']
-        2 [label = 'Categorical']
-        3 [label = 'Numeric']
-
-        
-        # edge definitions with the node IDs
-        1 -> 2
-        1 -> 3
-
-    }
-")
-
-tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram_small)),'img/diagram_small.png'))
-
-knitr::include_graphics("img/diagram_small.png") 
-
-```
-
-
-## Categorical Variables
-
-If the levels of the categorical variable has a comparable ordering then it is called an __ordinal variable__. 
-
-e.g. variable scholarship_status might have three levels as no scholarship, partial scholarship and full scholarship. We can order these levels from less to more or vice versa. 
-
-If there is no ordering then a categorical variable would be called a __nominal variable__. e.g. state names.
-
-
-
-## Numeric Variables
-
-Consider a variable `n_kids` which represents number of kids somebody has. Then this variable can take values (0, 1, 2, ...). Notice that this variable can take only integer values. This variable is said to be __discrete__ since it does not take on  infinitely many numbers that we are not able to count. 
-
-
-Numeric variables that can take infinitely many numbers are said to be __continuous__. Consider somebody's height in cm. This is a continuous variable. Even though we might say somebody is 173 cm, in reality the height could be 170.612476314631 cm. So height can take infinitely many values. 
-
-##
-
-```{r echo = FALSE, fig.align='center'}
-#| echo: false
-#| fig-align: center
-#| out-width: 80%
-diagram <- grViz("
-    digraph {
-        # graph aesthetics
-        graph [ranksep = 0.3]
-
-        # node definitions with substituted label text
-        1 [label = 'Variables']
-        2 [label = 'Categorical']
-        3 [label = 'Numeric']
-        4 [label = 'Nominal']
-        5 [label = 'Ordinal']
-        6 [label = 'Discrete']
-        7 [label = 'Continuous']
-
-        
-        # edge definitions with the node IDs
-        1 -> 2
-        1 -> 3
-        2 -> 4
-        2 -> 5
-        3 -> 6
-        3 -> 7
-    }
-")
-
-tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram)),'img/diagram.png'))
-
-knitr::include_graphics("img/diagram.png") 
-
-```
-
-
-
-
+::: 
 
