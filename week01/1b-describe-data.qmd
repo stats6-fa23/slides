@@ -1,0 +1,725 @@
+---
+title: "Describing Data with Numbers"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(fivethirtyeight)
+library(openintro)
+library(tidyverse)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(janitor)
+library(rsvg)
+library(bayesrules)
+data(bad_drivers)
+candy_rankings <- candy_rankings %>% 
+  select(competitorname, chocolate, fruity, sugarpercent, pricepercent, winpercent)
+data(hotel_bookings)
+```
+
+
+# Getting to Know Data
+
+[Dear Mona, Which State Has the Worst Drivers?](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/)
+
+```{r}
+library(fivethirtyeight)
+library(tidyverse)
+data("bad_drivers")
+```
+
+When you are given some code like this one in your lecture notes or assignments, you should run it first before beginning to code. As we progress in the course, you'll have a deeper understanding of what the starter codes do.
+
+## Data Frames  
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/data-matrix.png')
+knitr::include_graphics('img/data-matrix-tail.png')
+```
+
+## Data Frame
+
+- The data frame has `r ncol(bad_drivers)` __variables__ (state, num_drivers, perc_speeding, perc_not_distracted, perc_no_previous, insurance_premiums, losses). 
+
+- The data frame has `r nrow(bad_drivers)` __cases__ or __observations__. Each case represents a US state (or District of Columbia). 
+
+## Data documentation
+
+```{r}
+?bad_drivers
+```
+
+`state` State
+
+`num_drivers` Number of drivers involved in fatal collisions per billion miles
+
+`perc_speeding` Percentage of drivers involved in fatal collisions who were speeding
+
+`perc_alcohol` Percentage of drivers involved in fatal collisions who were alcohol-impaired
+
+`perc_not_distracted` Percentage of drivers involved in fatal collisions who were not distracted
+
+##
+
+`perc_no_previous` Percentage of drivers involved in fatal collisions who had not been involved in any previous accidents
+
+`insurance_premiums` Car insurance premiums ($)
+
+`losses` Losses incurred by insurance companies for collisions per insured driver ($)
+
+`Source` National Highway Traffic Safety Administration 2012, National Highway Traffic Safety Administration 2009 & 2012, National Association of Insurance Commissioners 2010 & 2011.
+
+# Functions for Data Frames
+
+##
+
+```{r}
+head(bad_drivers)
+```
+
+## 
+
+```{r}
+tail(bad_drivers)
+```
+
+##
+
+```{r}
+glimpse(bad_drivers)
+```
+
+##
+
+```{r}
+ncol(bad_drivers)
+```
+
+##
+
+```{r}
+nrow(bad_drivers)
+```
+
+## Getting to Know the Data Frame 
+
+ADD SCREENSHOT HERE
+
+
+##
+
+```{r}
+glimpse(candy_rankings)
+```
+
+##
+
+```{r}
+glimpse(bob_ross)
+```
+
+##
+
+```{r}
+glimpse(mariokart)
+```
+
+## Variables
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/data-candy.png')
+knitr::include_graphics('img/data-candy-tail.png')
+```
+
+## Variables
+
+Variables `sugarpercent`, `pricepercent`, and `winpercent` are __numerical variables__. 
+
+We can do certain analyses on these variables such as finding an average `winpercent` or the maximum or minimum `winpercent`.
+
+Note: Not everything represented by numbers is a numeric variable. e.g. Student ID number is not a numeric variable.
+
+
+
+## Variables
+
+
+Variables such as `competitorname`, `chocolate`, and `fruity` are __categorical variables__. 
+
+We cannot take averages or find maximum or minimum of these variables. 
+
+Categorical variables have __levels__. For instance `chocolate` and `fruity` both have two levels as `TRUE` and `FALSE`. 
+
+
+```{r echo = FALSE, fig.align='center'}
+diagram_small <- grViz("
+    digraph {
+        # graph aesthetics
+        graph [ranksep = 0.3]
+
+        # node definitions with substituted label text
+        1 [label = 'Variables']
+        2 [label = 'Categorical']
+        3 [label = 'Numeric']
+
+        
+        # edge definitions with the node IDs
+        1 -> 2
+        1 -> 3
+
+    }
+")
+
+tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram_small)),'img/diagram_small.png'))
+
+knitr::include_graphics("img/diagram_small.png") 
+
+```
+
+
+## Categorical Variables
+
+If the levels of the categorical variable has a comparable ordering then it is called an __ordinal variable__. 
+
+e.g. variable scholarship_status might have three levels as no scholarship, partial scholarship and full scholarship. We can order these levels from less to more or vice versa. 
+
+If there is no ordering then a categorical variable would be called a __nominal variable__. e.g. state names.
+
+## `candy_rankings` vs `bob_ross`
+
+:::{.font75}
+False - 0  
+True - 1
+:::
+
+
+## Numeric Variables
+
+Consider a variable `n_kids` which represents number of kids somebody has. Then this variable can take values (0, 1, 2, ...). Notice that this variable can take only integer values. This variable is said to be __discrete__ since it does not take on  infinitely many numbers that we are not able to count. 
+
+
+Numeric variables that can take infinitely many numbers are said to be __continuous__. Consider somebody's height in cm. This is a continuous variable. Even though we might say somebody is 173 cm, in reality the height could be 170.612476314631 cm. So height can take infinitely many values. 
+
+## In Statistics
+
+```{r echo = FALSE, fig.align='center'}
+#| echo: false
+#| fig-align: center
+#| out-width: 80%
+diagram <- grViz("
+    digraph {
+        # graph aesthetics
+        graph [ranksep = 0.3]
+
+        # node definitions with substituted label text
+        1 [label = 'Variables']
+        2 [label = 'Categorical']
+        3 [label = 'Numeric']
+        4 [label = 'Nominal']
+        5 [label = 'Ordinal']
+        6 [label = 'Discrete']
+        7 [label = 'Continuous']
+
+        
+        # edge definitions with the node IDs
+        1 -> 2
+        1 -> 3
+        2 -> 4
+        2 -> 5
+        3 -> 6
+        3 -> 7
+    }
+")
+
+tmp <- capture.output(rsvg_png(charToRaw(export_svg(diagram)),'img/diagram.png'))
+
+knitr::include_graphics("img/diagram.png") 
+
+```
+
+## (Some) Variable Types in R
+
+`character`: takes string values (e.g. a person's name, address)  
+
+. . .
+
+`integer`: integer (single precision)  
+
+. . .
+
+`double`: floating decimal (double precision)   
+
+. . .
+
+`numeric`: integer or double  
+
+. . .
+
+`factor`: categorical variables with different levels  
+
+. . .
+
+`logical`: TRUE (1), FALSE (0)  
+
+
+
+## 
+
+As a data scientist it is .font30[**your**] job to check the type(s) of data that you are working with. Do .font30[**not**]  assume you will work with clean data frames, with clean names, labels, and types.
+
+# Describing Data with Numbers
+
+## Data
+
+```{r}
+glimpse(hotel_bookings)
+```
+
+## Data
+
+```{r}
+#| echo: false
+hotel_bookings %>% 
+  select(lead_time, reservation_status) %>% 
+  glimpse()
+```
+
+What kind of variables are these two?
+
+##
+
+Categorical data are summarized with **counts** or **proportions**
+
+
+##
+
+```{r}
+count(hotel_bookings, reservation_status)
+```
+
+
+##
+
+```{r}
+count(hotel_bookings, reservation_status, sort = TRUE)
+```
+
+##
+
+```{r}
+tabyl(hotel_bookings, reservation_status)
+```
+
+
+
+## Summarizing Numerical Data
+
+Consider the following data which represents the number of hours slept for 10 people who were surveyed.
+
+
+<table>
+
+<tr>
+
+<td> 7 </td>
+<td> 7.5 </td>
+<td> 8 </td>
+<td> 5.5 </td>
+<td> 10 </td>
+<td> 7.2 </td>
+<td> 7 </td>
+<td> 8 </td>
+<td> 9 </td>
+<td> 8 </td>
+
+
+</tr>
+
+
+
+</table>
+
+
+
+## Mean
+
+$$\bar x = \frac{7+7.5+8+5.5+10+7.2+7+8+9+8}{10} = 7.72$$
+
+The mean is calculated by summing the observed values and then dividing by the number of observations.
+
+
+$$\bar x = \frac{x_1 + x_2+.... x_n}{n}$$
+
+
+where $\bar x$ represents the mean of observed values, $x_1$, $x_2$, ... $x_n$ represent the n observed values.
+
+
+
+## Median
+
+If all the observations are listed from smallest to largest (or vice versa), the median is the observation that falls in the middle. 
+
+
+
+<table>
+
+<tr>
+
+<td> 5.5 </td>
+<td> 7 </td>
+<td> 7 </td>
+<td> 7.2 </td>
+<td> 7.5 </td>
+<td> 8 </td>
+<td> 8 </td>
+<td> 8 </td>
+<td> 9 </td>
+<td> 10 </td>
+
+
+</tr>
+
+
+</table>
+
+
+
+In this case, we have two numbers in the middle 7.5 and 8. The average of these numbers would be the median. In this case, the median is 7.75. 
+
+$$\frac{7.5 + 8}{2} = 7.75$$
+
+##
+
+Median is also the 50th percentile indicating that 50% of the data fall below this value.
+
+
+
+## Q1, Q3, and Interquartile Range
+
+First quartile (Q1) is the point at which 25% of the data fall below of. 
+
+Third quartile (Q3) is the point at which 75% of the data fall below of. 
+
+Q1 and Q3 can be considered 25th and 75th percentiles respectively. 
+
+Interquartile Range (IQR) = Q3 - Q1] which represents the middle 50% of the data.
+
+
+## In Pairs: Discuss
+
+Consider Dr. Dogucu teaching three classes. 
+All of these classes have 5 students. 
+Below are exam results from these classes. 
+
+Class 1: 80 80 80 80 80  
+Class 2: 76 78 80 82 84  
+Class 3: 60 70 80 90 100  
+
+All of these classes have a mean of 80 points. 
+Do you think the mean describes these classes well? 
+Can you think of any other way to describe (in words not in numbers) how these classes differ?
+
+
+
+## Standard deviation and Variance {.smaller}
+
+
+<table align = "center">
+<thead>
+
+<th>x<sub>i</sub> </th> <th> $x_i - \bar{x}$ </th> <th> $(x_i - \bar{x})^2$</sup></th>
+</thead>
+
+<tr> 
+<td>5.5 </td> <td> 5.5-7.72 = -2.22 hr</td> <td> (-2.2 hr)<sup>2</sup> = 4.9284 hr <sup>2</sup> </td>
+</tr>
+
+<tr> 
+<td>7 </td> <td> 7-7.72 = -0.72 hr</td> <td> (-0.72 hr)<sup>2</sup> = 0.5184 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>7 </td> <td> 7-7.72 = -0.72 hr</td> <td> (-0.72 hr)<sup>2</sup> = 0.5184 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>7.2 </td> <td> 7.2-7.72 = -0.52 hr</td> <td> (-0.52 hr)<sup>2</sup> = 0.2704 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>7.5 </td> <td> 7.5-7.72 = -0.22 hr</td> <td> (-0.22 hr)<sup>2</sup> = 0.0484 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>8 </td> <td> 8-7.72 = 0.28 hr</td> <td> (0.28 hr)<sup>2</sup> = 0.0784 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>8 </td>  <td> 8-7.72 = 0.28 hr</td> <td> (0.28 hr)<sup>2</sup> = 0.0784 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>8 </td> <td> 8-7.72 = 0.28 hr</td> <td> (0.28 hr)<sup>2</sup> = 0.0784 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>9 </td> <td> 9-7.72 = 1.28 hr</td> <td> (1.28 hr)<sup>2</sup> = 1.6384 hr <sup>2</sup></td>
+</tr>
+
+<tr> 
+<td>10 </td> <td> 10-7.72 = 2.28 hr</td> <td> (2.28 hr)<sup>2</sup> = 5.1984 hr <sup>2</sup></td>
+</tr>
+
+</table>
+
+
+
+
+## Total squared distance from the mean
+
+
+$\Sigma_{i = 1}^{n} (x_i - \bar x )^2 =$
+
+$4.9284 + 0.5184 + 0.5184 + 0.2704 + 0.0484 +$ 
+$0.0784 + 0.0784 + 0.0784+ 1.6384 + 5.1984 = 13.356 \text{ hr}^2$
+
+Note that $n$ represents the number of observations which means $n = 10$.
+
+
+## Sample variance
+
+<br>    
+
+
+$$s^2 = \frac{\Sigma_{i = 1}^{n} (x_i - \bar x )^2}{n-1}$$ 
+
+
+<br>
+
+$$s^2= \frac{13.356}{10-1} = 1.484\text{ hr}^2$$
+
+
+
+## Sample standard deviation
+
+<br>
+
+$$s = \sqrt{\frac{\Sigma_{i = 1}^{n} (x_i - \bar x )^2}{n-1}}$$
+
+
+<br>
+$$s= \sqrt{1.484} = 1.218195 \text{ hr}$$
+
+## Mean
+
+::::{.columns}
+::: {.column width="50%"}
+
+```{r}
+summarize(hotel_bookings, 
+          mean(lead_time))
+```
+
+::: 
+
+::: {.column width="50%"}
+
+```{r}
+mean(hotel_bookings$lead_time)
+```
+
+:::
+
+::::
+
+## Median
+
+::::{.columns}
+
+::: {.column width="50%"}
+
+```{r}
+summarize(hotel_bookings, 
+          median(lead_time))
+```
+
+::: 
+
+::: {.column width="50%"}
+
+```{r}
+median(hotel_bookings$lead_time)
+```
+
+:::
+
+::::
+
+
+## Minimum
+
+::::{.columns}
+
+::: {.column width="50%"}
+
+```{r}
+summarize(hotel_bookings, 
+          min(lead_time))
+```
+
+::: 
+
+::: {.column width="50%"}
+
+```{r}
+min(hotel_bookings$lead_time)
+```
+
+:::
+
+::::
+
+In a similar fashion maxiumum can be found by using the `max()` function.
+
+## Standard deviation
+
+::::{.columns}
+
+::: {.column width="50%"}
+
+```{r}
+summarize(hotel_bookings, 
+          sd(lead_time))
+```
+
+::: 
+
+::: {.column width="50%"}
+
+```{r}
+sd(hotel_bookings$lead_time)
+```
+
+:::
+
+::::
+
+## Variance
+
+::::{.columns}
+
+::: {.column width="50%"}
+
+```{r}
+summarize(hotel_bookings, 
+          var(lead_time))
+```
+
+::: 
+
+::: {.column width="50%"}
+
+```{r}
+var(hotel_bookings$lead_time)
+```
+
+:::
+
+::::
+
+## Quantiles / Percentiles / Quartiles
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-7rfc{border-color:inherit;font-family:Arial, Helvetica, sans-serif !important;;font-size:28px;text-align:left;
+  vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-7rfc">Quantile</th>
+    <th class="tg-7rfc">Percentile</th>
+    <th class="tg-7rfc">Special Name</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-7rfc">0.25</td>
+    <td class="tg-7rfc">25th</td>
+    <td class="tg-7rfc">First quartile</td>
+  </tr>
+  <tr>
+    <td class="tg-7rfc">0.5</td>
+    <td class="tg-7rfc">50th</td>
+    <td class="tg-7rfc">Median</td>
+  </tr>
+  <tr>
+    <td class="tg-7rfc">0.75</td>
+    <td class="tg-7rfc">75th</td>
+    <td class="tg-7rfc">Third quartile</td>
+  </tr>
+</tbody>
+</table>
+
+## Quantiles
+
+```{r}
+summarize(hotel_bookings, quantile(lead_time, c(0.25, 0.50, 0.75)))
+```
+
+```{r echo = FALSE}
+q1 <- summarize(hotel_bookings, quantile(lead_time, c(0.25))) %>% 
+  pull()
+```
+
+
+We would expect 25% of the data to be less than `r q1`. 
+
+
+##
+
+We can get multiple summaries with one `summarize()` function.
+
+
+```{r}
+summarize(hotel_bookings,
+          mean(lead_time),
+          median(lead_time))
+```
+
+Note how the variables names in this table is not easy to read. 
+
+##
+
+
+
+In order to display the variable names more legibly in the output, we can assign variable names to numerical summaries (e.g. `mean_lead_time`).
+
+```{r}
+summarize(hotel_bookings,
+          mean_lead_time = mean(lead_time),
+          med_lead_time = median(lead_time))
+```
+
