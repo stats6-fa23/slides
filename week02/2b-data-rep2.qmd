@@ -1,0 +1,149 @@
+---
+title: "Data Representations <br> Part II"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+# Data Visualization 
+
+##
+
+In the last lecture we have made basic data visualizations. 
+In this lecture we will improve them to make them more accessible. 
+
+
+
+
+Colors
+Color Blindness
+
+[the ggplot flipbook](https://evamaerey.github.io/ggplot_flipbook/ggplot_flipbook_xaringan.html#1)
+[Level up your plots using colors, annotations, and text](https://www.cararthompson.com/talks/nhsr2023-level-up-workshop/)
+
+# Data Represented with Text
+
+## Assistive Technology
+
+Assistive Technology is any form of technology (software, device) that helps people with disabilities perform certain activities. 
+
+Examples:
+
+- walking sticks
+- wheel chairs
+- screen readers
+
+
+## Screen reader
+
+
+A screen reader is an assistive technology that supports blind or visually impaired people in using their computer. 
+
+##
+
+<center>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l-G4kKTuDHI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+The video shows use of a screen reader briefly. 
+
+</center>
+
+## Alternate Text
+
+- "Alt text" describes contents of an image. 
+- It is used in HTML pages. 
+- Screen-readers cannot read images but can read alt text. 
+- Alt text has to be provided. 
+
+## Manual Alternate Text
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- Chart type
+
+- Type of data
+
+- Reason for including the chart
+
+- Link to data or source (not in alt text but in main text)
+
+
+[Cesal, 2020](https://medium.com/nightingale/writing-alt-text-for-data-visualization-2a218ef43f81)
+:::
+
+::: {.column width="50%"}
+- Description conveys meaning in the data
+
+- Variables included on the axes
+
+- Scale described within the description
+
+- Type of plot is described
+
+[Canelón & Hare, 2021 ](https://www.youtube.com/watch?v=DxLkv2iRdf8&ab_channel=csvconf)
+:::
+
+::::
+
+## Data Verbalization -  Automated
+
+```{r}
+#| echo: false
+#| fig-height: 4
+mtcars <- mtcars %>% 
+  mutate(transmission = if_else(am == 0, "automatic", "manual"))
+```
+
+
+```{r}
+#| fig-align: center
+#| fig-height: 4
+#| echo: false
+example_barplot <- ggplot(mtcars, aes(x = transmission)) +
+  geom_bar() +
+  theme(axis.text = element_text(size = 20))
+example_barplot
+```
+
+The automated alternate text for this plot is on the next slide.
+
+
+## Data Verbalization -  Automated
+
+
+```{r}
+#| echo: true
+BrailleR::VI(example_barplot)
+```
+
+<hr>
+
+Drawback of using `VI()` is that not every type of plot can be verbalized yet. 
+
+
+## Guidelines
+
+## Caption vs. Alt-Text
+
+# Data Represented with Sound
+
+## Data Represented as a Tactile Representation
