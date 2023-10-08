@@ -18,7 +18,9 @@ format:
 ---
 
 ```{r}
+#| echo: false
 library(tidyverse)
+library(palmerpenguins)
 ```
 
 
@@ -29,16 +31,247 @@ library(tidyverse)
 In the last lecture we have made basic data visualizations. 
 In this lecture we will improve them to make them more accessible. 
 
+## Labeling Axes
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "6|7|8"
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)",
+       color = "Species",
+       title = "Palmer Penguins") 
+```
+
+We can change axes and plot labels using the `labs()` function. 
+
+
+## Themes
+
+::: {.panel-tabset}
+## `theme_gray()`
+
+```{r}
+#| code-line-numbers: "9"
+#| output-location: column
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_gray()
+```
+
+Theme gray is the default theme in ggplot.
+
+## `theme_bw()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_bw()
+```
+
+## `theme_dark()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_dark()
+```
+
+
+## `theme_classic()`
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_classic()
+```
+
+
+## `theme_minimal()`
+
+
+```{r}
+#| code-line-numbers: "9"
+#| output-location: column
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme_minimal()
+```
 
 
 
-Colors
-Color Blindness
+:::
 
-[the ggplot flipbook](https://evamaerey.github.io/ggplot_flipbook/ggplot_flipbook_xaringan.html#1)
-[Level up your plots using colors, annotations, and text](https://www.cararthompson.com/talks/nhsr2023-level-up-workshop/)
+## Font Size
 
-# Data Represented with Text
+
+```{r}
+#| code-line-numbers: "9"
+#| output-location: column
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", 
+       y = "Bill Length (mm)", 
+       title = "Palmer Penguins") +
+  theme(text = element_text(size=20))
+```
+
+The `theme()` function allows for many components of a theme. By typing `?theme` in the Console, you can read the documentation of the function to see what components can be modified.
+
+## Font Size
+
+One can also set the default font size of theme. For instance, if you utilize the following code at the first chunk of a Quarto document, all plots will be in gray theme and will have a font size of 22.
+
+```{r}
+theme_set(theme_gray(base_size = 22))
+```
+
+
+
+## Using Shapes in Addition to Colors
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "4"
+ggplot(penguins,
+       aes(x = bill_depth_mm,
+           y = bill_length_mm,
+           shape = species,
+           color = species)) +
+  geom_point(size = 4) 
+```
+
+Previously species were only distinguishable to someone who could distinguish these colors. 
+By using shapes, color-blind viewers can also distinguish the species.
+
+## Color-Blindness Simulation
+
+```{r}
+species_bills <- 
+  ggplot(penguins,
+         aes(x = bill_depth_mm,
+             y = bill_length_mm,
+             color = species)) +
+  geom_point(size = 4) 
+```
+
+By storing the plot as an object named `species_bills`, we will be able to use it in other functions.
+
+## Color-Blindness Simulation
+
+```{r}
+#| output-location: slide
+colorblindr::cvd_grid(species_bills) 
+```
+
+The `cvd_grid()` function from the `colorblindr()` package creates a grid of different color-deficiency simulations. 
+
+`Deuteranomaly` is reduced sensitivity to green light
+`Protanomaly`, is reduced sensitivity to red light
+`Tritanomaly` is reduced sensitivity to blue light 
+`Desaturated` is no color difference
+
+## Okabe-Ito Color Palette 
+
+In 2008, [Masataka Okabe and Kei Ito](https://jfly.uni-koeln.de/color/) proposed a color palette that is accessible to people with various color deficiencies. 
+We use their last names referring to the color palette. 
+
+
+```{r}
+#| echo: true
+palette.colors(palette = "Okabe-Ito")
+```
+
+## Okabe-Ito Color Palette 
+
+```{r}
+#| echo: false
+#| fig-align: center 
+scales:::show_col(palette.colors(palette = "Okabe-Ito"))
+```
+
+The codes displayed with a hashtag are called hex color code. You can use hex codes in R (and in HTML) to specify colors.
+
+## Okabe-Ito Color Palette
+
+```{r}
+#| fig-align: center
+species_bills + 
+  scale_color_manual(values = c("Adelie" = "#E69F00", "Chinstrap" = "#56B4E9", "Gentoo" = "#009E73"))
+
+```
+
+## Okabe-Ito Color Palette
+
+```{r}
+#| fig-align: center
+species_bills + 
+  colorblindr::scale_color_OkabeIto()
+
+```
+
+## Improving Data Visualizations
+
+[Top Ten Dos and Don't for Charts and Graphs](https://guides.lib.uci.edu/datavis/do)
+
+. . .
+
+We cannot learn every single ggplot feature in a single week but a little but an internet search and a few examples can go a long way in improving your visualizations.
+
+. . .
+
+Examples:
+
+- [Level Up Your Plots: Using colour, annotations, text hiearchy and other tricks to make your data story stand out](https://www.cararthompson.com/talks/nhsr2023-level-up-workshop/)
+
+- [the ggplot flipbook](https://evamaerey.github.io/ggplot_flipbook/ggplot_flipbook_xaringan.html#1)
+
+
+# Data Verbalization
+
 
 ## Assistive Technology
 
@@ -56,7 +289,7 @@ Examples:
 
 A screen reader is an assistive technology that supports blind or visually impaired people in using their computer. 
 
-##
+. . .
 
 <center>
 
@@ -73,7 +306,7 @@ The video shows use of a screen reader briefly.
 - Screen-readers cannot read images but can read alt text. 
 - Alt text has to be provided. 
 
-## Manual Alternate Text
+## Manual Alternate Text Guidelines
 
 :::: {.columns}
 
@@ -140,10 +373,107 @@ BrailleR::VI(example_barplot)
 Drawback of using `VI()` is that not every type of plot can be verbalized yet. 
 
 
-## Guidelines
+## Alt Text in Quarto
 
-## Caption vs. Alt-Text
+```{r}
+#| echo: fenced
+#| fig-align: center
+#| fig-cap: Relationship between bill depth (mm) and length (mm) for different species of penguins
+#| fig-alt: The scatterplot shows bill depth in mm on the x-axis and bill length in mm on the y-axis with points differently colored for different species as Adelie, Chinstrap, and Gentoo. The x axis ranges from about 12.5 mm to 22.5 mm. The y-axis ranges from about 30 to 60 mm. For all species the relationship seems moderately positive. When comparing the three species, Adelie penguins seem to have longer bill depth but shorter bill length. Chinstraps have longer bill depth and longer bill length. Gentoo penguins have shorter bill depth and longer bill length.  
+ggplot(penguins, aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point(size = 4) 
+```
 
-# Data Represented with Sound
+## Caption vs. Alt Text
 
-## Data Represented as a Tactile Representation
+Figure captions (`fig-cap`) appear on the front-end of a document and is accessible to all whether they are reading it directly or via screen readers. 
+
+Figure alternate text (`fig-alt`) only appears on the back-end of a document and is accessible to screen readers and those who know how to investigate the source code of a (HTML) document. 
+
+Even though, we are using captions and alternate text in Quarto, these are available features in many other software (e.g., Google doc, PowerPoint etc.)
+
+
+
+# Data Sonification
+
+## Data Sonification
+
+Data sonification is the presentation of data as sound. 
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-height: 3
+x <- 1:10
+y <- 1:10
+plot(x, y)
+
+```
+
+```{r}
+#| eval: false
+#| echo: true
+x <- 1:10
+y <- 1:10
+plot(x, y)
+sonify::sonify(x,y)
+
+```
+
+<audio controls>
+      <source src="audio/sonify.mp3" type="audio/mpeg">
+      Your browser does not support the audio element. </audio>
+
+
+## Data Tactualization
+
+Data tactulization refers to making data visualization in a form so that it can be touchable. 
+The video shows printing of a tactile boxplot.
+
+<center>
+
+<iframe  width="560" height="315" src="https://www.youtube.com/embed/ClI555l4Z1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</center>
+
+
+# Data Tactualization
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+#| eval: false
+#| echo: true
+library(tactileR)
+brl_begin(file = 'tactile.pdf', 
+          pt = 11, 
+          paper = 'special', font='BRL')
+hist(penguins$bill_length_mm)
+brl_end()
+```
+
+:::
+
+<!--the swell touch paper through swell form heating machine-->
+
+
+
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 80%
+#| fig-alt: A histogram with x and y labels, title displayed in Braille.
+knitr::include_graphics("img/hist-braille.png")
+```
+
+:::
+
+
+::::
+

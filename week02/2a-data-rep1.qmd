@@ -474,6 +474,15 @@ ggplot(penguins,
   geom_point()
 ```
 
+## code style
+
+[The tidyverse style guide](https://style.tidyverse.org/ggplot2.html) has the following convention for writing ggplot2 code.
+
+Similar to the piper operator`%>%`, the plus sign for adding layers `+` always has a space before it and is followed by a new line. 
+
+The new line is indented by two spaces. RStudio does this automatically for you. 
+
+
 ## Practice
 
 Using the `penguins` data frame ask a question that you are interested in answering. Visualize data to get a visual answer to the question. What is the visual telling you? Note all of this down in your lecture notes.
