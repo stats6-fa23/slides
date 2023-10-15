@@ -731,13 +731,12 @@ none
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>artists</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 2
+<pre><code># A tibble: 3 × 2
   name          followers
   &lt;chr&gt;             &lt;dbl&gt;
 1 Beyoncé        24757958
 2 Taylor Swift   33098116
-3 Ariana Grande  51807131
-4 Drake          50252529</code></pre>
+3 Ariana Grande  51807131</code></pre>
 </div>
 </div>
 </div>
@@ -787,7 +786,7 @@ none
   &lt;chr&gt;         &lt;chr&gt;                       &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;
 1 Beyoncé       Savage Remix (feat. Beyonc… Savage Re…              83  24757958
 2 Taylor Swift  cardigan                    folklore                85  33098116
-3 Drake         Laugh Now Cry Later (feat.… Laugh Now…              95  50252529
+3 Drake         Laugh Now Cry Later (feat.… Laugh Now…              95        NA
 4 Beyoncé       Halo                        I AM…SASH…              NA  24757958
 5 Ariana Grande Stuck with U (with Justin … Stuck wit…              NA  51807131</code></pre>
 </div>
@@ -798,47 +797,46 @@ none
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">right_join</span>(songs, artists)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 5
+<pre><code># A tibble: 4 × 5
   name          song_name                   album_name song_popularity followers
   &lt;chr&gt;         &lt;chr&gt;                       &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;
 1 Beyoncé       Savage Remix (feat. Beyonc… Savage Re…              83  24757958
 2 Taylor Swift  cardigan                    folklore                85  33098116
-3 Drake         Laugh Now Cry Later (feat.… Laugh Now…              95  50252529
-4 Beyoncé       Halo                        I AM…SASH…              NA  24757958
-5 Ariana Grande Stuck with U (with Justin … Stuck wit…              NA  51807131</code></pre>
+3 Beyoncé       Halo                        I AM…SASH…              NA  24757958
+4 Ariana Grande Stuck with U (with Justin … Stuck wit…              NA  51807131</code></pre>
 </div>
 </div>
 </section>
 <section id="section-11" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">full_join</span>(artists, songs, <span class="at">by =</span> <span class="st">"name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">full_join</span>(songs, artists, <span class="at">by =</span> <span class="st">"name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 5
-  name          followers song_name                   album_name song_popularity
-  &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;                       &lt;chr&gt;                &lt;dbl&gt;
-1 Beyoncé        24757958 Savage Remix (feat. Beyonc… Savage Re…              83
-2 Beyoncé        24757958 Halo                        I AM…SASH…              NA
-3 Taylor Swift   33098116 cardigan                    folklore                85
-4 Ariana Grande  51807131 Stuck with U (with Justin … Stuck wit…              NA
-5 Drake          50252529 Laugh Now Cry Later (feat.… Laugh Now…              95</code></pre>
+  name          song_name                   album_name song_popularity followers
+  &lt;chr&gt;         &lt;chr&gt;                       &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;
+1 Beyoncé       Savage Remix (feat. Beyonc… Savage Re…              83  24757958
+2 Taylor Swift  cardigan                    folklore                85  33098116
+3 Drake         Laugh Now Cry Later (feat.… Laugh Now…              95        NA
+4 Beyoncé       Halo                        I AM…SASH…              NA  24757958
+5 Ariana Grande Stuck with U (with Justin … Stuck wit…              NA  51807131</code></pre>
 </div>
 </div>
 </section>
 <section id="section-12" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">full_join</span>(artists, songs, <span class="at">by =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">full_join</span>(songs, artists, <span class="at">by =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">full_join</span>(albums, <span class="at">by =</span> <span class="st">"album_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 6
-  name         followers song_name album_name song_popularity album_release_date
-  &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;                &lt;dbl&gt; &lt;date&gt;            
-1 Beyoncé       24757958 Savage R… Savage Re…              83 2020-04-29        
-2 Beyoncé       24757958 Halo      I AM…SASH…              NA 2008-11-14        
-3 Taylor Swift  33098116 cardigan  folklore                85 NA                
-4 Ariana Gran…  51807131 Stuck wi… Stuck wit…              NA 2020-05-08        
-5 Drake         50252529 Laugh No… Laugh Now…              95 2020-08-14        </code></pre>
+  name         song_name album_name song_popularity followers album_release_date
+  &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt; &lt;date&gt;            
+1 Beyoncé      Savage R… Savage Re…              83  24757958 2020-04-29        
+2 Taylor Swift cardigan  folklore                85  33098116 NA                
+3 Drake        Laugh No… Laugh Now…              95        NA 2020-08-14        
+4 Beyoncé      Halo      I AM…SASH…              NA  24757958 2008-11-14        
+5 Ariana Gran… Stuck wi… Stuck wit…              NA  51807131 2020-05-08        </code></pre>
 </div>
 </div>
 </section>

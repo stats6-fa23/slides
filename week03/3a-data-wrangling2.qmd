@@ -317,13 +317,13 @@ right_join(songs, artists)
 ##
 
 ```{r}
-full_join(artists, songs, by = "name")
+full_join(songs, artists, by = "name")
 ```
 
 ##
 
 ```{r}
-full_join(artists, songs, by = "name") |> 
+full_join(songs, artists, by = "name") |> 
   full_join(albums, by = "album_name")
 ```
 
