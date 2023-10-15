@@ -1,0 +1,332 @@
+---
+title: "Data Wrangling <br> Part II"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(janitor)
+options(scipen = 999)
+```
+
+
+```{r}
+#| echo: false
+lapd <- 
+  read_csv(here::here("data/Police_Payroll.csv")) %>% 
+  janitor::clean_names() %>% 
+  filter(year == 2018) %>% 
+  select(job_class_title, 
+         employment_type, 
+         base_pay) %>% mutate(employment_type = as.factor(employment_type),
+           job_class_title = as.factor(job_class_title),
+           base_pay_level = case_when(
+    base_pay < 0 ~ "Less than 0", 
+    base_pay == 0 ~ "No Income",
+    base_pay < 100000 & base_pay > 0 ~ "Between 0 and 100K",
+    base_pay > 100000 ~ "Greater than 100K")) 
+
+
+artists <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "artist")
+songs <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "top_song")
+albums <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "album") %>% 
+  mutate(album_release_date = lubridate::ymd(album_release_date))
+```
+
+## Data
+
+```{r}
+glimpse(lapd)
+```
+
+
+# Review of Aggregating Data
+
+
+##
+
+::::{.columns}
+:::{.column width="50%"}
+### Data
+Observations
+:::
+
+:::{.column width="50%"}
+### Aggregate Data
+Summaries of observations
+:::
+::::
+
+## Aggregating Categorical Data
+
+Categorical data are summarized with **counts** or **proportions**.
+
+##
+
+
+```{r}
+lapd %>% 
+  count(employment_type)
+```
+
+. . .
+
+```{r}
+lapd %>% 
+  count(employment_type) %>% 
+  mutate(prop = n/sum(n))
+```
+
+## Aggregating Numerical Data
+
+Mean, median, standard deviation, variance, and quartiles are some of the numerical summaries of numerical variables. Recall
+
+
+```{r}
+summarize(lapd, 
+          mean_base_pay = mean(base_pay),
+          sd_base_pay = sd(base_pay))
+```
+
+# Aggregating Data By Groups
+
+## `group_by()`
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/group-by.jpeg")
+```
+
+`group_by()` separates the data frame by the groups. Any action following `group_by()` will be completed for each group separately.
+
+##
+
+Q. What is the median salary for each employment type?
+
+## 
+
+```{r}
+lapd %>% 
+  group_by(employment_type)
+```
+
+##
+
+Note that when `group_by()` is used there have been no changes to the number of columns or rows. 
+The only difference we can observe is now `Groups: employment_type[3]` is displayed indicating the data frame (i.e., tibble) is divided into three groups.
+
+##
+
+```{r}
+lapd %>% 
+  group_by(employment_type) %>% 
+  summarize(med_base_pay = median(base_pay))
+```
+
+##
+
+We can also remind ourselves how many staff members there were in each group.
+
+```{r}
+lapd %>% 
+  group_by(employment_type) %>% 
+  summarize(med_base_pay = median(base_pay),
+            count = n())
+```
+
+Note that `n()` does not take any arguments.
+
+
+
+# Data Joins
+
+## `left_join(x, y)`
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/left-join.png")
+```
+
+## `right_join(x, y)`
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 45% 
+knitr::include_graphics("img/right-join.png")
+```
+
+## `full_join(x, y)`
+
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 45% 
+knitr::include_graphics("img/full-join.png")
+```
+
+## `semi_join(x, y)`
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 45% 
+knitr::include_graphics("img/inner-semi-join.png")
+```
+
+## `anti_join(x, y)`
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 45% 
+knitr::include_graphics("img/anti-join.png")
+```
+
+## `something_join(x, y)`
+
+
+<table>
+<thead>
+  <tr>
+    <th></th>
+    <th colspan="2" style="text-align: center">x</th>
+    <th colspan="2" style="text-align: center">y</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td></td>
+    <td>rows</td>
+    <td>columns</td>
+    <td>rows</td>
+    <td>columns</td>
+  </tr>
+  <tr>
+    <td>`left_join()`</td>
+    <td>all</td>
+    <td>all</td>
+    <td>matched</td>
+    <td>all</td>
+  </tr>
+  <tr>
+    <td>`right_join()`</td>
+    <td>matched</td>
+    <td>all</td>
+    <td>all</td>
+    <td>all</td>
+  </tr>
+  <tr>
+    <td>`full_join()`</td>
+    <td>all</td>
+    <td>all</td>
+    <td>all</td>
+    <td>all</td>
+  </tr>
+  <tr>
+    <td>`inner_join()`</td>
+    <td>matched</td>
+    <td>all</td>
+    <td>matched</td>
+    <td>all</td>
+  </tr>
+  <tr>
+    <td>`semi_join()`</td>
+    <td>matched</td>
+    <td>all</td>
+    <td>none</td>
+    <td>none</td>
+  </tr>
+  <tr>
+    <td>`anti_join()`</td>
+    <td>unmatched</td>
+    <td>all</td>
+    <td>none</td>
+    <td>none</td>
+  </tr>
+</tbody>
+</table>
+
+## 
+
+::: {.panel-tabset}
+
+## artists
+
+```{r}
+artists
+```
+
+## songs
+
+```{r}
+songs
+```
+
+## albums
+
+```{r}
+albums
+```
+
+
+
+:::
+##
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/data_joins_spotify.png")
+```
+
+## 
+
+```{r}
+left_join(songs, artists)
+```
+
+## 
+
+```{r}
+right_join(songs, artists)
+```
+
+
+##
+
+```{r}
+full_join(artists, songs, by = "name")
+```
+
+##
+
+```{r}
+full_join(artists, songs, by = "name") |> 
+  full_join(albums, by = "album_name")
+```
+
+
+##
+Complete the questions provided to you in the lecture notes.

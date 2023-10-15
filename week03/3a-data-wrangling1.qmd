@@ -151,7 +151,6 @@ The output of the first function is the first argument of the second function.
 
 ##
 
-Do you recall composite functions such as $f \circ g(x)$?
 
 . . .
 
@@ -220,7 +219,7 @@ The `clean_names()` function changes all variable names to tidyverse style.
 
 ```{r}
 #| echo: false
-knitr::include_graphics("img/data-wrangle.001.jpeg")
+knitr::include_graphics("img/subset-columns.jpeg")
 ```
 
 . . .
@@ -231,7 +230,7 @@ Column-wise subsetting can be done using `select()`.
 
 ```{r}
 #| echo: false
-knitr::include_graphics("img/data-wrangle.002.jpeg")
+knitr::include_graphics("img/subset-rows.jpeg")
 ```
 
 . . .
