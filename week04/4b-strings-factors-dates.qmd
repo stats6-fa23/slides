@@ -1,0 +1,673 @@
+---
+title: "Working with Strings, Factors, and Dates"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+```
+
+# Working with Strings
+
+##
+
+```{r echo = FALSE, fig.align='center', out.width="40%"}
+
+knitr::include_graphics("img/stringr-logo.png")
+```
+
+
+```{r}
+library(stringr)
+```
+
+
+##
+
+[Friends](https://www.imdb.com/title/tt0108778)
+
+
+
+```{r echo = FALSE, message=FALSE}
+friends <- read_csv(here::here("data/friends.csv"))
+```
+
+```{r eval = FALSE, message=FALSE}
+friends <- read_csv(here::here("data/friends.csv"))
+```
+ 
+```{r}
+glimpse(friends)
+```
+
+##
+
+```{r}
+friends$description
+```
+
+##
+
+```{r}
+friends$description[1]
+```
+
+. . .
+
+```{r}
+first_episode_desc <- friends$description[1]
+```
+
+
+##
+
+```{r eval=FALSE}
+str_something(some_character_vector, ....)
+```
+
+
+
+## `str_length()`
+
+
+```{r}
+str_length(first_episode_desc)
+```
+
+`str_length()` returns the length of string.
+
+##
+
+Which episode has the longest description?
+
+```{r}
+str_length(friends$description)
+```
+
+##
+
+Which episode has the longest description?
+
+```{r}
+max(str_length(friends$description))
+```
+
+##
+
+Which episode has the longest description?
+
+```{r}
+friends %>% 
+  filter(str_length(description) == max(str_length(description)))
+```
+
+
+##
+
+Which episode has the longest description?
+
+```{r}
+friends %>% 
+  filter(str_length(description) == max(str_length(description))) %>% 
+  select(description) %>% 
+  pull() %>% 
+  str_length()
+```
+
+
+
+## `str_sub()`
+
+##
+
+```{r}
+first_episode_desc
+```
+
+. . .
+
+```{r}
+# 2nd to 8th character
+str_sub(first_episode_desc, 2, 8)
+```
+
+. . .
+
+```{r}
+# 4th to fifth-to-last character 
+str_sub(first_episode_desc, 4, -5)
+```
+
+
+
+
+## `str_to_lower()` and `str_to_upper()`
+
+```{r}
+str_to_lower(first_episode_desc)
+```
+
+. . .
+
+```{r}
+str_to_upper(first_episode_desc)
+```
+
+
+##
+
+Change all the titles to capital letters.
+
+```{r}
+friends %>% 
+  mutate(title = str_to_upper(title))
+```
+
+
+## `str_detect()`
+
+
+
+```{r}
+str_detect(first_episode_desc, "Rachel")
+```
+
+. . .
+
+```{r}
+str_detect(first_episode_desc, "Ross")
+```
+
+
+##
+
+How many episodes have "Phoebe" in the description?
+
+```{r}
+str_detect(friends$description, "Phoebe") 
+```
+
+##
+
+```{r}
+str_detect(friends$description, "Phoebe") %>% 
+  sum()
+```
+
+
+
+## `str_split()`
+
+```{r}
+str_split(first_episode_desc, boundary("word"))
+```
+
+##
+
+```{r}
+str_split(first_episode_desc, boundary("character"))
+```
+
+
+
+## `str_replace()`
+
+
+
+```{r}
+str_replace(first_episode_desc, "Monica", "Monika")
+```
+
+
+##
+
+[stringr cheatsheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf)
+
+# Working with Factors
+
+```{r echo = FALSE, fig.align='center', out.width="30%"}
+knitr::include_graphics("img/forcats-logo.png")
+```
+
+```{r}
+library(forcats)
+```
+
+
+Functions have the form `fct_something()`
+
+. . .
+
+Most of the examples in this lecture is from the `forcats` packages documentation.
+
+##
+
+```{r}
+glimpse(gss_cat)
+```
+
+
+
+## Collapsing factors
+
+```{r}
+str(gss_cat$partyid)
+```
+
+. . .
+
+```{r}
+count(gss_cat, partyid)
+```
+
+## Collapsing factors
+
+```{r}
+partyid2 <- fct_collapse(gss_cat$partyid,
+                         missing = c("No answer", "Don't know"),
+                         other = "Other party",
+                         rep = c("Strong republican", "Not str republican"),
+                         ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+                         dem = c("Not str democrat", "Strong democrat")
+                         )
+```
+
+
+. . .
+
+```{r}
+partyid2
+```
+
+## Collapsing factors
+
+```{r}
+gss_cat %>% 
+  mutate(partyid2 = 
+           fct_collapse(partyid,
+                        missing = c("No answer", "Don't know"),
+                        other = "Other party",
+                        rep = c("Strong republican", "Not str republican"),
+                        ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+                        dem = c("Not str democrat", "Strong democrat")))
+```
+
+
+
+## Dropping levels
+
+```{r}
+year <- factor(c("sophomore", "sophomore", "first-year", "sophomore"), 
+            levels = c("first-year", "sophomore", "junior", "senior"))
+year
+
+```
+
+. . .
+
+```{r}
+fct_drop(year)
+```
+
+. . .
+
+```{r}
+fct_drop(year, only = "senior")
+```
+
+
+## Matching
+
+```{r}
+fct_match(gss_cat$marital, "Married")
+```
+
+## Matching
+
+```{r}
+fct_match(gss_cat$marital, c("Married", "Divorced"))
+```
+
+##
+
+We can use these functions along with other data wrangling functions.
+
+```{r}
+gss_cat %>% 
+  mutate(married_divorced = fct_match(marital, c("Married", "Divorced")))
+```
+
+
+
+## Recoding levels
+
+```{r}
+places <- factor(c("Irvine", 
+                   "Los Angeles", 
+                   "Albany", 
+                   "New York City"))
+places
+
+```
+
+##
+
+```{r}
+fct_recode(places, 
+           California = "Irvine", 
+           California = "Los Angeles") 
+```
+
+
+##
+
+```{r}
+fct_recode(places, 
+           California = "Irvine", 
+           California = "Los Angeles")
+```
+
+##
+
+```{r warning = TRUE, error=TRUE}
+fct_recode(places, 
+           California = "Irvinnne", 
+           California = "Los Angeles")
+```
+
+##
+
+[forcats cheatsheet](http://www.flutterbys.com.au/stats/downloads/slides/figure/factors.pdf)
+
+# Working with Dates
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/lubridate-logo.jpg")
+```
+
+
+```{r}
+#| message: false
+library(lubridate)
+```
+
+##
+
+```{r echo = FALSE, fig.align='center', out.height="95%"}
+knitr::include_graphics("https://imgs.xkcd.com/comics/iso_8601.png")
+```
+
+https://xkcd.com/1179/
+
+
+##
+
+```{r}
+today()
+now()
+```
+
+
+
+# From strings to dates
+
+
+
+## `mdy()`
+
+```{r}
+
+arrival <- c("November 1st, 2005", "February 2nd 2007")
+
+```
+
+. . .
+
+```{r}
+str(arrival)
+```
+
+. . .
+
+```{r}
+mdy(arrival)
+```
+
+. . .
+
+```{r}
+str(mdy(arrival))
+```
+
+##
+
+```{r}
+mdy("11012005")
+```
+
+. . .
+
+```{r}
+mdy("Nov-01-2005")
+```
+
+##
+
+`mdy()`
+
+. . .
+
+`ymd()`
+
+. . .
+
+`dmy()`
+
+
+##
+
+We can include hours, minutes and seconds too.
+
+```{r}
+mdy_hms("11/01/2005 22:05:18")
+```
+
+. . .
+
+
+```{r}
+mdy_hms("11/01/2005 22:05:18") %>% 
+  str()
+```
+
+
+
+
+## Types
+
+`date`
+
+. . .
+
+`time`
+
+. . .
+
+`date-time`
+
+. . .
+
+`POSIXct`
+
+. . .
+
+`POSIXlt`
+
+These represent date-time vectors in R.
+
+
+
+## Including time zones
+
+```{r}
+mdy_hms("11/01/2005 22:05:18", 
+        tz = "America/Los_Angeles")
+```
+
+
+
+## All time zones
+
+```{r}
+OlsonNames()
+```
+
+
+
+## All time zones
+
+```{r}
+length(OlsonNames())
+```
+
+. . .
+
+```{r}
+OlsonNames()[114:119]
+```
+
+
+
+# Time spans
+
+##
+
+```{r}
+today() - ymd("1911/05/31")
+```
+
+. . .
+
+```{r}
+since_titanic <- today() - ymd("1911/05/31")
+str(since_titanic)
+```
+
+
+
+## Durations
+
+```{r}
+since_titanic <- as.duration(since_titanic)
+str(since_titanic)
+since_titanic
+```
+
+
+
+## Durations
+
+```{r}
+some_date <- ymd("1911/05/31")
+
+some_date + ddays(3)
+```
+
+. . .
+
+```{r}
+
+some_date + ddays(3) + dseconds(4)
+```
+
+##
+
+```{r}
+some_time <- mdy_hms("10/31/2020 10:05:18", 
+        tz = "America/Los_Angeles")
+
+some_time
+```
+
+. . .
+
+```{r}
+some_time + ddays(1)
+```
+
+. . .
+
+Lubridate package takes daylight savings into account.
+
+
+
+# Components of Date and Time
+
+
+
+## Getting Year
+
+```{r}
+apollo11_return <- ymd_hm("1969/07/21 17:54")
+apollo11_return
+```
+
+. . .
+
+```{r}
+year(apollo11_return)
+```
+
+
+## Getting Month
+
+```{r}
+month(apollo11_return)
+```
+
+. . .
+
+```{r}
+month(apollo11_return, label = TRUE)
+```
+
+
+
+## Getting Day and Day of the Week
+
+```{r}
+day(apollo11_return)
+```
+
+. . .
+
+```{r}
+wday(apollo11_return)
+```
+
+. . .
+
+```{r}
+wday(apollo11_return, label = TRUE)
+```
+
+##
+
+[lubridate cheatsheet](https://rstudio.github.io/cheatsheets/html/lubridate.html)
