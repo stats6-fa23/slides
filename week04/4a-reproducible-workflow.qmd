@@ -1,5 +1,5 @@
 ---
-title: "Reproducible Workflow Practices"
+title: "Good Workflow Practices for Reproducible Data Science"
 author: "Dr. Mine Dogucu"
 execute:
   echo: true
