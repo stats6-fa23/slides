@@ -8,7 +8,7 @@
 <link href="3b-data-wrangling2_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="3b-data-wrangling2_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="3b-data-wrangling2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Dr.&nbsp;Mine Dogucu">
   <title>Data Wrangling   Part II</title>
@@ -439,7 +439,7 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 <section id="section-1" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>lapd <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>lapd <span class="sc">|&gt;</span> </span>
 <span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">count</span>(employment_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
@@ -452,8 +452,8 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>lapd <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">count</span>(employment_type) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>lapd <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">count</span>(employment_type) <span class="sc">|&gt;</span> </span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n<span class="sc">/</span><span class="fu">sum</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
@@ -498,7 +498,7 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 <section id="section-3" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>lapd <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>lapd <span class="sc">|&gt;</span> </span>
 <span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">group_by</span>(employment_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 14,824 × 4
@@ -526,8 +526,8 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 <section id="section-5" class="slide level2">
 <h2></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>lapd <span class="sc">%&gt;%</span> </span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">group_by</span>(employment_type) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>lapd <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">group_by</span>(employment_type) <span class="sc">|&gt;</span> </span>
 <span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">summarize</span>(<span class="at">med_base_pay =</span> <span class="fu">median</span>(base_pay))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
@@ -543,8 +543,8 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 <h2></h2>
 <p>We can also remind ourselves how many staff members there were in each group.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>lapd <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">group_by</span>(employment_type) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>lapd <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">group_by</span>(employment_type) <span class="sc">|&gt;</span> </span>
 <span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">summarize</span>(<span class="at">med_base_pay =</span> <span class="fu">median</span>(base_pay),</span>
 <span id="cb13-4"><a href="#cb13-4"></a>            <span class="at">count =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -566,7 +566,7 @@ $ base_pay_level  &lt;chr&gt; "Greater than 100K", "Greater than 100K", "Greater
 <section id="left_joinx-y" class="slide level2">
 <h2><code>left_join(x, y)</code></h2>
 
-<img data-src="img/left-join.png" width="310" class="r-stretch quarto-figure-center"></section>
+<img data-src="img/left-join.png" class="r-stretch quarto-figure-center"></section>
 <section id="right_joinx-y" class="slide level2">
 <h2><code>right_join(x, y)</code></h2>
 
@@ -775,7 +775,7 @@ none
 <section id="section-8" class="slide level2">
 <h2></h2>
 
-<img data-src="img/data_joins_spotify.png" width="960" class="r-stretch quarto-figure-center"></section>
+<img data-src="img/data_joins_spotify.png" class="r-stretch quarto-figure-center"></section>
 <section id="section-9" class="slide level2">
 <h2></h2>
 <div class="cell">

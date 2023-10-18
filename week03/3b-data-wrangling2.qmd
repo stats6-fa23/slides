@@ -30,12 +30,12 @@ options(scipen = 999)
 ```{r}
 #| echo: false
 lapd <- 
-  read_csv(here::here("data/Police_Payroll.csv")) %>% 
-  janitor::clean_names() %>% 
-  filter(year == 2018) %>% 
+  read_csv(here::here("data/Police_Payroll.csv")) |> 
+  janitor::clean_names() |> 
+  filter(year == 2018) |> 
   select(job_class_title, 
          employment_type, 
-         base_pay) %>% mutate(employment_type = as.factor(employment_type),
+         base_pay) |> mutate(employment_type = as.factor(employment_type),
            job_class_title = as.factor(job_class_title),
            base_pay_level = case_when(
     base_pay < 0 ~ "Less than 0", 
@@ -46,7 +46,7 @@ lapd <-
 
 artists <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "artist")
 songs <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "top_song")
-albums <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "album") %>% 
+albums <- readxl::read_xlsx("../data/spotify.xlsx", sheet = "album") |> 
   mutate(album_release_date = lubridate::ymd(album_release_date))
 ```
 
@@ -82,15 +82,15 @@ Categorical data are summarized with **counts** or **proportions**.
 
 
 ```{r}
-lapd %>% 
+lapd |> 
   count(employment_type)
 ```
 
 . . .
 
 ```{r}
-lapd %>% 
-  count(employment_type) %>% 
+lapd |> 
+  count(employment_type) |> 
   mutate(prop = n/sum(n))
 ```
 
@@ -124,7 +124,7 @@ Q. What is the median salary for each employment type?
 ## 
 
 ```{r}
-lapd %>% 
+lapd |> 
   group_by(employment_type)
 ```
 
@@ -136,8 +136,8 @@ The only difference we can observe is now `Groups: employment_type[3]` is displa
 ##
 
 ```{r}
-lapd %>% 
-  group_by(employment_type) %>% 
+lapd |> 
+  group_by(employment_type) |> 
   summarize(med_base_pay = median(base_pay))
 ```
 
@@ -146,8 +146,8 @@ lapd %>%
 We can also remind ourselves how many staff members there were in each group.
 
 ```{r}
-lapd %>% 
-  group_by(employment_type) %>% 
+lapd |> 
+  group_by(employment_type) |> 
   summarize(med_base_pay = median(base_pay),
             count = n())
 ```
