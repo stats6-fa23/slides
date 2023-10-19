@@ -186,7 +186,7 @@ knitr::include_graphics("img/right-join.png")
 knitr::include_graphics("img/full-join.png")
 ```
 
-## `semi_join(x, y)`
+## `inner_join(x, y)` and `semi_join(x, y)`
 
 ```{r}
 #| echo: false
