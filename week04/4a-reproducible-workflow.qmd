@@ -241,7 +241,9 @@ We can also load multiple tidyverse packages all at the same time.
 library(tidyverse)
 ```
 
+## Exercise
 
+Refer back to older slides and identify the packages for each of the functions we commonly use in this class. 
 
 ## Importing .csv Data 
 
