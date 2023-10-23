@@ -29,7 +29,7 @@ Three principles of naming files
 
 (Jenny Bryan)
 
-for the purposes of this bootcamp an additional principle is that file names follow
+for the purposes of this course an additional principle is that file names follow
 
 - tidyverse style (all lower case letters, words separated by HYPHEN)
 
@@ -59,7 +59,7 @@ for the purposes of this bootcamp an additional principle is that file names fol
 
 ## README examples
 
-- [ICS 80 website](https://github.com/ics80-fa21/website)
+- [STATS 6 website](https://github.com/stats6-fa23/website)
 - [Museum of Modern Art Collection](https://github.com/MuseumofModernArt/collection)
 - [R package bayesrules](https://github.com/bayes-rules/bayesrules)
 
@@ -230,16 +230,8 @@ knitr::include_graphics("img/beep-help.png")
 
 ## Tidyverse
 
-In short, tidyverse is a family of packages. From practical stand point, you can install many tidyverse packages at once (and you did this). By doing that you installed all the following packages.
+In short, tidyverse is a family of packages. From practical stand point, you can install many tidyverse packages at once (and you did this). 
 
-- ggplot2
-- dplyr
-- tidyr
-- readr
-- purrr
-- tibble
-- stringr
-- forcats
 
 ##
 
