@@ -28,3 +28,12 @@ $linkColorHover: darken( $linkColor, 20% );
 .font75{font-size:75px}
 .font100{font-size:100px}
 .font150{font-size:150px}
+
+.pull-left {
+  float: left;
+  width: 50%;
+}
+.pull-right {
+  float: right;
+  width: 50%;
+}
