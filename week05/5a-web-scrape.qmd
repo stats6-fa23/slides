@@ -1,0 +1,282 @@
+---
+title: "Web scraping"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+# A Brief Introduction to HTML & CSS
+
+**H**yper**t**ext **M**arkup **L**anguage
+
+**C**ascading **S**tyle **S**heets
+
+## An ugly web page
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/ugly-website.png")
+```
+
+## HTML document outline
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-html-start.mp4" type="video/mp4">
+</video>
+
+</center>
+
+## Paragraphs
+
+<center>
+
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-p-tag.mp4" type="video/mp4">
+</video>
+
+</center>
+
+
+## Hyperlinks
+
+<center>
+
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-a-tag.mp4" type="video/mp4">
+</video>
+
+</center>
+
+##
+
+`<a href="https://www.r-project.org/">R</a>`
+
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+`<a> </a>`
+:::
+
+:::{.column width="50%"}
+HTML tag
+:::
+
+::::
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+`href`
+
+:::
+
+:::{.column width="50%"}
+attribute (name)
+:::
+
+::::
+
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+`https://www.r-project.org/`
+:::
+
+
+:::{.column width="50%"}
+attribute (value)
+::: 
+
+::::
+
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+`R`
+:::
+
+:::{.column width="50%"}
+content
+:::
+
+::::
+
+
+## Spans
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-span-tag.mp4" type="video/mp4">
+</video>
+
+</center>
+
+
+## Styling
+
+<center>
+
+<video width="80%" height="45%%" align = "center" controls>
+  <source src="screencast/5-style-css.mp4" type="video/mp4">
+</video>
+
+</center>
+
+##
+
+```{r}
+#| echo: false
+knitr::include_graphics(here::here("week05/img/html-tree.jpeg"))
+```
+
+
+# Web Scraping
+
+## 
+
+```{r}
+library(rvest)
+library(tidyverse)
+```
+
+##
+
+```{r}
+robotstxt::paths_allowed("http://www.criterion.com")
+robotstxt::paths_allowed("http://www.facebook.com")
+```
+
+## What we see
+
+```{r}
+#| echo: false
+#| fig-align: center
+knitr::include_graphics("img/criterion.png")
+```
+
+## What we want
+
+## We want to use `.R` files as opposed to `.qmd`.
+
+##
+
+```{r}
+page <- read_html("https://www.criterion.com/shop/browse/list?sort=spine_number")
+```
+
+## 
+
+Even though it is hard to see all the data we want is stored in the object called `page`. 
+
+```{r}
+page
+```
+
+## Scraping Spine Numbers
+
+```{r}
+page |> 
+  html_nodes(".g-spine")
+```
+
+## Scraping Spine Numbers
+
+```{r}
+page  |>  
+  html_nodes(".g-spine") |> 
+  html_text() 
+```
+
+## Scraping Spine Numbers
+
+```{r}
+page  |>  
+  html_nodes(".g-spine") |> 
+  html_text() |> 
+  str_remove_all("\n") 
+
+```
+
+## Scraping Spine Numbers
+
+```{r}
+spine <- page  |>  
+  html_nodes(".g-spine") |> 
+  html_text() |> 
+  str_remove_all("\n") 
+```
+
+## Scraping Titles
+
+```{r}
+title <- page |> 
+  html_nodes(".g-title") |> 
+  html_text() |> 
+  str_remove_all("\n")
+```
+
+## Scraping Directors
+
+```{r}
+director <- page |> 
+  html_nodes(".g-director") |> 
+  html_text() |> 
+  str_remove_all("\n")
+```
+
+## Scraping Years
+
+```{r}
+year <- page |> 
+  html_nodes(".g-year") |> 
+  html_text() |> 
+  str_remove_all("\n")
+```
+
+## Putting Everything in a Tibble
+
+```{r}
+criterion <- tibble(spine = spine,
+                    title = title,
+                    director = director,
+                    year = year) |> 
+  slice(-1) |> 
+  mutate(spine = as.numeric(spine),
+         year = as.numeric(year)) 
+
+```
+
+## Writing the Dataset
+
+```{r}
+#| eval: false
+readr::write_csv(criterion, here::here("data/criterion.csv"))
+```
+
+
