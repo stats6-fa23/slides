@@ -280,3 +280,12 @@ readr::write_csv(criterion, here::here("data/criterion.csv"))
 ```
 
 
+## Considerations
+
+Finding data online does not grant permission to scrape and use the data
+
+1. Is it ethical? Be especially mindful when using data from human subjects. Check out [Institutional Review Board](https://research.uci.edu/human-research-protections/) for regulations on doing research with human subjects data.
+
+2. Is it legal? Check terms of use. Commercial use may not be permitted.
+
+
