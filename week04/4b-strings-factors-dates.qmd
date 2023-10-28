@@ -112,7 +112,7 @@ max(str_length(friends$description))
 Which episode has the longest description?
 
 ```{r}
-friends %>% 
+friends |> 
   filter(str_length(description) == max(str_length(description)))
 ```
 
@@ -122,10 +122,10 @@ friends %>%
 Which episode has the longest description?
 
 ```{r}
-friends %>% 
-  filter(str_length(description) == max(str_length(description))) %>% 
-  select(description) %>% 
-  pull() %>% 
+friends |> 
+  filter(str_length(description) == max(str_length(description))) |> 
+  select(description) |> 
+  pull() |> 
   str_length()
 ```
 
@@ -174,7 +174,7 @@ str_to_upper(first_episode_desc)
 Change all the titles to capital letters.
 
 ```{r}
-friends %>% 
+friends |> 
   mutate(title = str_to_upper(title))
 ```
 
@@ -205,7 +205,7 @@ str_detect(friends$description, "Phoebe")
 ##
 
 ```{r}
-str_detect(friends$description, "Phoebe") %>% 
+str_detect(friends$description, "Phoebe") |> 
   sum()
 ```
 
@@ -297,7 +297,7 @@ partyid2
 ## Collapsing factors
 
 ```{r}
-gss_cat %>% 
+gss_cat |> 
   mutate(partyid2 = 
            fct_collapse(partyid,
                         missing = c("No answer", "Don't know"),
@@ -348,7 +348,7 @@ fct_match(gss_cat$marital, c("Married", "Divorced"))
 We can use these functions along with other data wrangling functions.
 
 ```{r}
-gss_cat %>% 
+gss_cat |> 
   mutate(married_divorced = fct_match(marital, c("Married", "Divorced")))
 ```
 
@@ -493,7 +493,7 @@ mdy_hms("11/01/2005 22:05:18")
 
 
 ```{r}
-mdy_hms("11/01/2005 22:05:18") %>% 
+mdy_hms("11/01/2005 22:05:18") |> 
   str()
 ```
 
