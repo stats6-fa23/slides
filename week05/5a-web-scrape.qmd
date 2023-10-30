@@ -165,6 +165,8 @@ library(rvest)
 library(tidyverse)
 ```
 
+`rvest` package has several functions that help with web scraping.
+
 ##
 
 ```{r}
@@ -197,6 +199,10 @@ knitr::include_graphics("img/criterion-csv.png")
 ## We should use `.R` files as opposed to `.qmd`.
 
 ##
+
+[Criterion Collection](https://www.criterion.com/shop/browse/list?sort=spine_number) is a video distribution company that is known for "important movies".
+
+. . .
 
 ```{r}
 page <- read_html("https://www.criterion.com/shop/browse/list?sort=spine_number")
