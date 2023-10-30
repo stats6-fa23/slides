@@ -182,7 +182,19 @@ knitr::include_graphics("img/criterion.png")
 
 ## What we want
 
-## We want to use `.R` files as opposed to `.qmd`.
+The first five rows of the `.csv` file we would like to achieve.
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/criterion-csv.png")
+```
+
+
+## Selector Gadget
+
+[Selector Gadget](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) extension can help us select CSS classes.
+
+## We should use `.R` files as opposed to `.qmd`.
 
 ##
 
