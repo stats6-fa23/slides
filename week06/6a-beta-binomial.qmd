@@ -1,0 +1,508 @@
+---
+title: "Introduction to Bayesian Inference"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+## 
+
+```{r}
+library(bayesrules)
+library(tidyverse)
+```
+
+```{r}
+#| echo: false
+theme_set(theme_gray(base_size = 18))
+```
+
+Examples from this lecture are mainly taken from the [Bayes Rules! book](https://www.bayesrulesbook.com/) and the new functions are from the `bayesrules` package.
+
+# Statistical Inference
+
+## Making meaning of data
+
+- In the first half of the quarter, we retrieved data (by downloading or scraping), opened data, joined data, wrangled data, described data. 
+
+- In the second half of the quarter we will make meaning of data using statistical inference and modeling.
+
+## Research question
+
+Every research project aims to answer a research question (or multiple questions).
+
+::: {.callout-tip icon=false}
+## Example
+Do UCI students who exercise regularly have higher GPA?
+::: 
+
+
+## Population
+
+Each research question aims to examine a __population__. 
+
+::: {.callout-tip icon=false}
+## Example
+
+Population for this research question is UCI students.
+
+:::
+
+## Sampling
+
+A population is a collection of elements which the research question aims to study. 
+However it is often costly and sometimes impossible to study the whole population. 
+Often a subset of the population is selected to be studied. Sample is the subset of the population that is studied. 
+
+. . .
+
+::: {.callout-tip icon=false}
+
+## Example
+
+Since it would be almost impossible to study ALL UCI students, we can study a sample of students.
+
+:::
+
+## Note
+
+The goal is to have a sample that is __representative__ of the population so that the findings of the study can generalize to the population.
+
+
+## Descriptive Statistics vs. Inferential Statistics
+
+- In descriptive statistics, we use **sample statistics** such as the sample mean or proportion to understand the observed data. 
+
+- In inferential statistics we use the observed data to make an inference about the **population parameters* using probabilistic models.
+
+## Bayesian vs. Frequentist Statistics
+
+- These are two major paradigms that define probability and thus two major paradigms to making statistical inference. 
+
+. . .
+
+- We will make statistical inference using Bayesian methods and next week we will use frequentist methods. Both these methods are valid and used in research.
+
+. . .
+
+- Which of these methods you will choose to utilize in your final projects will depend on your understanding of your research topic, your philosophical approach to science, and a few statistical considerations. 
+
+# Bayesian Inference
+
+
+## Bechdel Test
+
+Alison Bechdel’s 1985 comic Dykes to Watch Out For has a strip called [The Rule](https://www.npr.org/templates/story/story.php?storyId=94202522?storyId=94202522) where a person states that they only go to a movie if it satisfies the
+following three rules:
+
+- the movie has to have at least two women in it;
+
+- these two women talk to each other; and
+
+- they talk about something besides a man.
+
+. . . 
+
+This test is used for assessing movies in terms of representation of women. Even though there are three criteria, a movie either fails or passes the Bechdel test.
+
+##
+
+Let $\pi$ be the the proportion of movies that pass the Bechdel test.
+
+. . . 
+
+The Beta distribution is a good fit for modeling our prior understanding about $\pi$. 
+
+. . . 
+
+We will utilize functions from `library(bayesrules)` to examine different people's prior understanding of $\pi$ and build our own. 
+
+## The Optimist
+
+```{r}
+#| fig-align: center
+summarize_beta(14, 1)
+
+plot_beta(14, 1) 
+```
+
+## The Clueless
+
+```{r}
+#| fig-align: center
+summarize_beta(1, 1)
+
+plot_beta(1, 1) 
+```
+
+## The Feminist
+
+```{r}
+#| fig-align: center
+summarize_beta(5, 11)
+
+plot_beta(5, 11) 
+```
+
+## Vocabulary
+
+__Informative prior:__ An informative prior reflects specific information about the unknown
+variable with high certainty (ie. low variability).
+
+
+__Vague (diffuse) prior:__
+
+A vague or diffuse prior reflects little specific information about the unknown variable. A flat prior, which assigns equal prior plausibility to all possible values of the variable, is a special case.
+
+
+## Quiz question
+
+Which of these people are more certain (i.e. have a highly informative prior)?
+
+- The optimist
+- The clueless
+- The feminist
+
+## Plotting Beta Prior
+
+```{r echo = FALSE, message = FALSE, fig.align='center'}
+library(tidyverse)
+# Set up beta data
+
+alpha <- c(1,1,3,1,5,20,7,2,5)
+beta  <- c(5,2,7,1,5,20,3,1,1)
+betas <- data.frame(setting = factor(rep(1:9, 
+                                         each = 500)), 
+                    x = rep(seq(0, 1, 
+                                length = 500), 9),
+                    alpha = rep(alpha, each = 500),
+                    beta = rep(beta, each = 500))
+
+betas <- betas %>% 
+  mutate(y = dbeta(x, shape1 = alpha, shape2 = beta))
+
+levels(betas$setting) <-
+  paste0("Beta(",alpha,",",beta,")")
+
+trend_data <- data.frame(alpha, beta,
+                         means = (alpha / (alpha +
+                                             beta)),
+                         modes = 
+                           ((alpha - 1) / 
+                              (alpha + beta - 2))) %>% 
+  mutate(Parameter = 
+           paste0("Beta(",alpha,",",beta,")")) %>% 
+  mutate(setting = Parameter) %>% 
+  mutate(means_d = dbeta(means, alpha, beta), 
+         modes_d = dbeta(modes, alpha, beta))
+
+trend_data$setting <- factor(trend_data$setting, 
+                             levels = c("Beta(1,5)",
+                                        "Beta(1,2)",
+                                        "Beta(3,7)",
+                                        "Beta(1,1)",
+                                        "Beta(5,5)",
+                                        "Beta(20,20)",
+                                        "Beta(7,3)",
+                                        "Beta(2,1)",
+                                        "Beta(5,1)"))
+  
+ggplot(betas, aes(x = x, y = y)) + 
+  lims(x = c(0,1), y = c(0,5.5)) + 
+  geom_line() + 
+  facet_wrap(~ setting) + 
+  labs(x = expression(pi), y =
+         expression(paste("f(",pi,")"))) + 
+  scale_x_continuous(breaks = c(0,0.25,0.5,0.75,1),
+                     labels =
+                       c("0","0.25","0.50","0.75","1")) +
+  theme(text = element_text(size=20)) 
+
+```
+
+## Your prior
+
+What is your prior model of $\pi$?
+
+Utilize the `summarize_beta()` and `plot_beta()` functions to describe your own prior model of $\pi$.
+Make sure to note this down. 
+We will keep referring to this quite a lot. 
+
+## Data
+
+```{r}
+set.seed(84735)
+bechdel_sample <- sample_n(bechdel, 20)
+
+```
+
+We are taking a random sample of size 20 from the `bechdel` data frame using the `sample_n()` function. 
+
+. . .
+
+The `set.seed()` makes sure that we end up with the same set of 20 movies when we run the code. 
+This will hold true for anyone in the class. 
+So we can all reproduce each other's analyses, if we wanted to.
+The number `84735` has no significance other than that it closely resembles BAYES. 
+
+
+## Data
+
+```{r}
+glimpse(bechdel_sample)
+```
+
+. . .
+
+```{r}
+count(bechdel_sample, binary)
+
+```
+
+## The Optimist 
+
+```{r}
+summarize_beta_binomial(14, 1, y = 9, n = 20)
+```
+
+## The Optimist 
+
+
+```{r fig.align = "center", fig.height = 5}
+plot_beta_binomial(14, 1, y = 9, n = 20)
+```
+
+## The Clueless 
+
+```{r}
+summarize_beta_binomial(1, 1, y = 9, n = 20)
+```
+
+
+## The Clueless 
+
+
+```{r fig.align = "center", fig.height = 5}
+plot_beta_binomial(1, 1, y = 9, n = 20)
+```
+
+## The Feminist 
+
+```{r}
+summarize_beta_binomial(5, 11, y = 9, n = 20)
+```
+
+
+## The Feminist
+
+
+```{r fig.align = "center", fig.height = 5}
+plot_beta_binomial(5, 11, y = 9, n = 20)
+```
+
+## Comparison 
+
+
+```{r fig.align = "center", fig.width = 15, echo = FALSE, fig.height=5}
+library(patchwork)
+optimist <- plot_beta_binomial(14, 1, y = 9, n = 20) +
+  labs(title = "Optimist")
+clueless <- plot_beta_binomial(1, 1, y = 9, n = 20) +
+  labs(title = "Clueless")
+feminist <- plot_beta_binomial(5, 11, y = 9, n = 20) +
+  labs(title = "Feminist")
+
+gridExtra::grid.arrange(optimist,  clueless, feminist, ncol=3)
+
+
+```
+
+## Your Posterior
+
+Utilize `summarize_beta_binomial()` and `plot_beta_binomial()` functions to examine your own posterior model. 
+
+
+
+
+## Balancing Act of Bayesian Analysis
+
+
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-align: center
+knitr::include_graphics("img/bayes-balance-1.png")
+```
+
+In Bayesian methodology, the prior model and the data both contribute to our posterior model. 
+
+
+
+## Different Data, Different Posteriors
+
+Morteza, Nadide, and Ursula –  all share the optimistic Beta(14,1) prior for $\pi$ but each have access to different data. Morteza reviews movies from 1991. Nadide reviews movies from 2000 and Ursula reviews movies from 2013. How will the posterior distribution for each differ?
+
+## Morteza's analysis
+
+```{r}
+bechdel_1991 <- filter(bechdel, year == 1991)
+count(bechdel_1991, binary)
+
+
+6/13
+```
+
+. . .
+
+```{r}
+summarize_beta_binomial(14, 1, y = 6, n = 13)
+```
+
+## Morteza's analysis
+
+```{r fig.height=5, fig.align="center"}
+plot_beta_binomial(14, 1, y = 6, n = 13)
+```
+
+## Nadide's analysis
+
+```{r}
+bechdel_2000 <- filter(bechdel, year == 2000)
+count(bechdel_2000, binary)
+
+29/(34+29)
+```
+
+. . .
+
+```{r}
+summarize_beta_binomial(14, 1, y = 29, n = 63)
+```
+
+## Nadide's analysis
+
+```{r fig.height=5, fig.align="center"}
+plot_beta_binomial(14, 1, y = 29, n = 63)
+```
+
+## Ursula's analysis
+
+```{r}
+bechdel_2013 <- filter(bechdel, year == 2013)
+count(bechdel_2013, binary)
+
+46/(53+46)
+```
+
+. . .
+
+```{r}
+summarize_beta_binomial(14, 1, y = 46, n = 99)
+```
+
+
+## Ursula's analysis
+
+```{r fig.height=5, fig.align="center"}
+plot_beta_binomial(14, 1, y = 46, n = 99)
+
+```
+
+## Summary 
+
+```{r}
+#| echo: false
+theme_set(theme_gray(base_size = 12))
+```
+
+```{r, echo=FALSE, message=FALSE}
+## Remove
+## Code for facet_wrapped Beta-Binomial plots
+### Plotting function
+beta_binom_grid_plot <- function(data, likelihood = FALSE, posterior = FALSE){
+  g <- ggplot(data, aes(x = pi, y = prior)) + 
+    geom_line() + 
+    geom_area(alpha = 0.5, aes(fill = "prior", x = pi, y = prior)) + 
+    scale_fill_manual("", values = c(prior = "gold1", 
+      `(scaled) likelihood` = "cyan2", posterior = "cyan4"), breaks = c("prior", "(scaled) likelihood", "posterior")) + 
+    labs(x = expression(pi), y = "density") + 
+    theme(legend.position="bottom")
+  
+  if(likelihood == TRUE){
+    g <- g + 
+      geom_line(aes(x = pi, y = likelihood)) + 
+      geom_area(alpha = 0.5, aes(fill = "(scaled) likelihood", x = pi, y = likelihood))
+  }
+  
+  if(posterior == TRUE){
+    g <- g + 
+      geom_line(aes(x = pi, y = posterior)) + 
+      geom_area(alpha = 0.5, aes(fill = "posterior", x = pi, y = posterior)) 
+  }
+  g
+}
+make_plot_data <- function(as, bs, xs, ns, labs_prior, labs_likelihood){
+  ### Set up data to call in plot
+  # Refinement parameter
+  size <- 250
+  
+  # Model settings
+  pi <- rep(seq(0,1,length=size), 9)
+  
+  # Prior parameters
+  a <- rep(as, each = size*3)
+  b <- rep(bs, each = size*3)
+  # Data
+  x <- rep(rep(xs, each = size), 3)
+  n <- rep(rep(ns, each = size), 3)
+  # Posterior parameters
+  a_post <- x + a
+  b_post <- n - x + b
+  # Labels
+  setting_prior      <- as.factor(rep(1:3, each = size*3))
+  setting_likelihood <- as.factor(rep(rep(1:3, each = size), 3))
+  levels(setting_prior)      <- labs_prior
+  levels(setting_likelihood) <- labs_likelihood    
+  # Prior, likelihood, posterior functions
+  bfun1 <- function(x){dbinom(x = xs[1], size = ns[1], prob = x)}
+  bfun2 <- function(x){dbinom(x = xs[2], size = ns[2], prob = x)}
+  bfun3 <- function(x){dbinom(x = xs[3], size = ns[3], prob = x)}
+  scale   <- rep(rep(c(integrate(bfun1, 0, 1)[[1]], integrate(bfun2, 0, 1)[[1]], integrate(bfun3, 0, 1)[[1]]), each = size), 3)
+  prior      <- dbeta(x = pi, shape1 = a, shape2 = b)
+  likelihood <- dbinom(x = x, size = n, prob = pi) / scale
+  posterior  <- dbeta(x = pi, shape1 = a_post, shape2 = b_post)
+  # Combine into data frame
+  data.frame(setting_prior, setting_likelihood, pi, a, b, x, n, likelihood, prior, posterior)
+}
+plot_dat <- make_plot_data(
+  as = c(5,1,14), bs = c(11,1,1), 
+  xs = c(6,29,46), ns = c(13,63,99), 
+  labs_prior = c("prior: Beta(5,11)", "prior: Beta(1,1)", "prior: Beta(14,1)"), 
+  labs_likelihood = c("data: Y = 6 of n = 13", "data: Y = 29 of n = 63", "data: Y = 46 of n = 99"))
+```
+
+
+```{r echo = FALSE, fig.align='center'}
+plot_dat_new <- plot_dat %>% 
+  mutate(setting_prior = factor(setting_prior, 
+                                levels = c("prior: Beta(14,1)", "prior: Beta(5,11)", "prior: Beta(1,1)")))
+beta_binom_grid_plot(plot_dat_new, posterior = TRUE, likelihood = TRUE) + 
+  facet_grid(setting_prior ~ setting_likelihood) +
+  theme(text = element_text(size=17)) 
+```
+
+
+priors: Beta(14,1), Beta(5,11),  Beta(1,1)
+
