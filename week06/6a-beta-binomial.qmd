@@ -1,5 +1,6 @@
 ---
-title: "Introduction to Bayesian Inference"
+title: "Introduction to Bayesian Inference:"
+subtitle: "The Beta-Binomial Model"
 author: "Dr. Mine Dogucu"
 execute:
   echo: true
