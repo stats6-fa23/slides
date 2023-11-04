@@ -1,0 +1,315 @@
+---
+title: "Introduction to Bayesian Inference:"
+subtitle: "Credible Intervals and Hypothesis Testing"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+## 
+
+```{r}
+library(bayesrules)
+library(tidyverse)
+```
+
+```{r}
+#| echo: false
+theme_set(theme_gray(base_size = 18))
+```
+
+Examples from this lecture are mainly taken from the [Bayes Rules! book](https://www.bayesrulesbook.com/) and the new functions are from the `bayesrules` package.
+
+## Recall
+
+Last lecture the optimist had the following models.
+
+```{r}
+summarize_beta_binomial(14, 1, y = 9, n = 20)
+```
+
+. . .
+
+Prior model: $\pi \sim \text{Beta}(14, 1)$
+
+We can read this as the variable $\pi$ follows a Beta model with parameters 14 and 1.
+
+. . .
+
+Posterior model: $\pi|Y \sim \text{Beta}(14, 1)$
+
+We can read this as $\pi$ given $Y$ (i.e., the data) follows a Beta model with parameters 23 and 12.
+
+## 
+
+```{r}
+plot_beta_binomial(14, 1, y = 9, n = 20)
+```
+
+# Credible Intervals
+
+## 
+
+We are often interested in how our ideas change from prior to posterior. 
+
+One measure that can capture this change is the credible interval. 
+
+## Prior credible interval
+
+
+```{r}
+#| echo: false
+ci_prior <- qbeta(c(0.025, 0.975), 14, 1)
+```
+
+According to optimist's prior model the probability that $\pi$ is between 
+`r ci_prior[1]` and `r ci_prior[2]` is 95%. 
+
+
+## 
+
+
+```{r}
+#| echo: false
+pi <- seq(0, 1, by = 0.01)
+y <- dbeta(pi, 14,1)
+
+data <- tibble(pi = pi, y = y)
+
+qplot(pi, y, data = data, 
+          geom = "line") +
+  geom_ribbon(data = subset(data, pi > ci_prior[1] & pi < ci_prior[2]),
+              aes(ymax = y), 
+                  ymin = 0,
+                  fill = "#e56646", 
+                  colour = NA, 
+                  alpha = 0.5) +
+  annotate(geom = "text", x = 0.9, y = 1.5, label = "95%")
+```
+##
+
+```{r}
+#| echo: false
+pi <- seq(0, 1, by = 0.01)
+y <- dbeta(pi, 14,1)
+
+data <- tibble(pi = pi, y = y)
+
+qplot(pi, y, data = data, 
+          geom = "line") +
+  geom_ribbon(data = subset(data, pi > ci_prior[1] & pi < ci_prior[2]),
+              aes(ymax = y), 
+                  ymin = 0,
+                  fill = "#e56646", 
+                  colour = NA, 
+                  alpha = 0.5) +
+  annotate(geom = "text", x = 0.9, y = 1.5, label = "95%") +
+  geom_segment(aes(x = ci_prior[1], 
+                   y = dbeta(ci_prior[1], 14, 1), 
+                   xend = 0.65, 
+                   yend =  5),
+               arrow = arrow(length = unit(0.1, "cm"))) +
+  annotate(geom = "text", x = 0.65, y = 5.5, label = "2.5th percentile") +
+  geom_segment(aes(x = 0.99, 
+                   y = 12.5, 
+                   xend = 0.8, 
+                   yend =  16),
+               arrow = arrow(length = unit(0.1, "cm"))) +
+  annotate(geom = "text", x = 0.8, y = 17, label = "97.5th percentile")
+```
+## Prior Credible Interval
+
+```{r}
+qbeta(c(0.025, 0.975), 14, 1)
+```
+
+We can utilize the `qbeta()` function to calculate the middle 95% prior credible interval. 
+
+For a given quantile (probability) the `qbeta()` function returns the corresponding $\pi$ value. 
+
+We are essentially calculating the 2.5th and 97.5th percentiles. 
+
+## Posterior credible interval
+
+```{r}
+qbeta(c(0.025, 0.975), 23, 12)
+```
+
+```{r}
+#| echo: false
+posterior_ci <- qbeta(c(0.025, 0.975), 23, 12)
+```
+
+After having observed the data, optimist's posterior model indicates that with 95% probability $\pi$ is between `r posterior_ci[1]` and `r posterior_ci[2]`.
+
+# Hypothesis Testing
+
+## Recall feminist's data analysis
+
+```{r}
+#| fig-align: center
+summarize_beta_binomial(5, 11, y = 9, n = 20)
+
+plot_beta_binomial(5, 11, y = 9, n = 20) 
+```
+
+## Scenario
+
+Let's assume that the general public assumes that more than one-third of the movies pass the Bechdel test. In other words, they believe $\pi \geq 0.33$.
+
+While working on his prior model, the feminist was unsure of this and wanted to put this claim to test during his data analysis. 
+
+## Setting hypotheses
+
+$H_0: \pi \geq 0.33$  
+$H_A: \pi < 0.33$
+
+The null hypothesis ($H_0$) represents the status quo and the alternative hypothesis, ($H_a$), is feminist's claim that he'd like to test.
+
+## Prior Probability
+
+What is the prior probability that $\pi$ is less than 0.33 ? In other words $P(\pi < 0.33) = ?$
+
+. . .
+
+
+```{r}
+prior_prob <- pbeta(0.33, 5 , 11)
+prior_prob
+```
+
+Note that `pbeta(0.33, 5, 11)` always shows probability that $pi$ is less than a specific value, in this case 0.33 for a specific Beta distribution, in this case Beta (5,11). 
+
+
+## Posterior Probability
+
+What is the posterior probability that $\pi$ is less than 0.33 after having observed the data? In other words $P(\pi |Y < 0.33) = ?$
+
+. . .
+
+```{r}
+posterior_prob <- pbeta(0.33, 14 , 22)
+posterior_prob
+```
+
+##
+
+```{r}
+#| echo: false
+#| fig-align: center
+plot_prob_plot <- function(a,b,cutoff){
+  ggplot(data.frame(x = c(0,1)), aes(x=x)) + 
+    stat_function(fun = dbeta, args = list(a, b), xlim = c(0,cutoff), geom = "area", fill = "lightblue") + 
+    stat_function(fun = dbeta, args = list(a, b)) + 
+    geom_segment(aes(x = cutoff, xend = cutoff, y = 0, yend = dbeta(cutoff, a, b))) +
+    labs(x = expression(pi), y = "density")
+}
+
+plot_prob_plot(5, 11, cutoff = 0.33) + 
+  lims(x = c(0, 1)) +
+  labs(title = "Prior")
+```
+
+##
+
+```{r}
+#| echo: false
+#| fig-align: center
+plot_prob_plot(14, 22, cutoff = 0.33) + 
+  lims(x = c(0, 1)) +
+  labs(title = "Posterior")
+```
+
+
+## 
+
+$$P(\pi<0.33)$$
+
+```{r}
+#| echo: true
+prior_prob <- pbeta(0.33, 5, 11)
+prior_prob
+```
+
+. . .
+
+```{r}
+#| echo: false
+prior_odds <- prior_prob / (1 - prior_prob)
+```
+
+$$\text{Prior odds } = \frac{P(H_a)}{P(H_0)} = `r prior_odds` \; .$$ 
+
+```{r}
+#| echo: true
+prior_odds <- prior_prob / (1 - prior_prob)
+prior_odds
+```
+
+## 
+
+$$P(\pi | Y <0.33)$$
+
+```{r}
+#| echo: true
+posterior_prob <- pbeta(0.33, 14, 22)
+posterior_prob
+```
+
+. . .
+
+```{r}
+#| echo: false
+posterior_odds <- posterior_prob / (1 - posterior_prob)
+```
+
+$$\text{Posterior odds } = \frac{P(H_a |Y)}{P(H_0 |Y)} = `r posterior_odds` \; .$$ 
+
+```{r}
+#| echo: true
+posterior_odds <- posterior_prob / (1 - posterior_prob)
+posterior_odds
+```
+
+## The __Bayes Factor (BF)__ compares the posterior odds to the prior odds, hence provides insight into just how much the feminist's understanding about movies passing the Bechdel test _evolved_ upon observing the sample data:
+
+
+$$\text{Bayes Factor} = \frac{\text{Posterior odds }}{\text{Prior odds }}$$
+
+```{r echo = FALSE}
+BF <- posterior_odds / prior_odds
+```
+
+
+## Bayes Factor
+
+In a hypothesis test of two competing hypotheses, $H_a$ vs $H_0$, the Bayes Factor is an odds ratio for $H_a$:
+
+$$\text{Bayes Factor}
+= \frac{\text{Posterior odds}}{\text{Prior odds}}
+= \frac{P(H_a | Y) / P(H_0 | Y)}{P(H_a) / P(H_0)}
+ \; .$$
+
+
+##
+
+As a ratio, it's meaningful to compare the Bayes Factor (BF)\ to 1.  To this end, consider three possible scenarios:
+
+1. BF = 1:  The plausibility of $H_a$ _didn't change_ in light of the observed data.
+2. BF > 1:  The plausibility of $H_a$ _increased_ in light of the observed data.  Thus the greater the Bayes Factor, the more convincing the evidence for $H_a$.
+3. BF < 1:  The plausibility of $H_a$ _decreased_ in light of the observed data. 
+
+
+
