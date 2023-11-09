@@ -48,7 +48,7 @@ We can read this as the variable $\pi$ follows a Beta model with parameters 14 a
 
 . . .
 
-Posterior model: $\pi|Y \sim \text{Beta}(14, 1)$
+Posterior model: $\pi|Y \sim \text{Beta}(23, 12)$
 
 We can read this as $\pi$ given $Y$ (i.e., the data) follows a Beta model with parameters 23 and 12.
 
