@@ -344,8 +344,8 @@ The double dollar signs at the beginning and at the end let Gradescope know that
 
 **Hypotheses** 
 
-$H_0: \pi = 0.5$  
-$H_A: \pi \neq 0.5$
+$H_0: \pi < 0.5$  
+$H_A: \pi \geq 0.5$
 
 . . .
 
@@ -390,7 +390,7 @@ The parameter we want to infer about is **a single proportion**.
 
 **Hypotheses**
 
-$$H_0: \pi = 0.5$$ $$H_A: \pi \neq 0.5$$
+$$H_0: \pi \leq 0.5$$ $$H_A: \pi > 0.5$$
 
 . . .
 
