@@ -478,7 +478,7 @@ Later on we will also learn
 
 # Central Limit Theorem
 
-## Parameters of a normal distribution $N(\mu, \sigma^2$
+## Parameters of a normal distribution $N(\mu, \sigma^2)$
 
 
 ```{r echo = FALSE, fig.align='center'}
