@@ -747,8 +747,8 @@ Dr.&nbsp;Mine Dogucu
 </section>
 <section id="hypotheses" class="slide level2">
 <h2>Hypotheses</h2>
-<p><span class="math inline">\(H_0: \pi = 0.5\)</span><br>
-<span class="math inline">\(H_A: \pi \neq 0.5\)</span></p>
+<p><span class="math inline">\(H_0: \pi \leq 0.5\)</span><br>
+<span class="math inline">\(H_A: \pi &gt; 0.5\)</span></p>
 </section>
 <section id="assuming-h_0-is-true" class="slide level2">
 <h2>Assuming <span class="math inline">\(H_0\)</span> is True</h2>
@@ -789,60 +789,19 @@ Dr.&nbsp;Mine Dogucu
 <div class="fragment">
 <p>If our sample proportion is “extreme” then so is 0.90, 0.91, 0.917, 0.9273423 etc.</p>
 </div>
-<div class="fragment">
-<p>Our sample proportion is 0.83 - 0.5 = 0.33 units away from the null.</p>
-</div>
-<div class="fragment">
-<p>So we will consider 0.5 - 0.33 = 0.17 also an “extreme” sample proportion.</p>
-</div>
-<div class="fragment">
-<p>This makes 0.16, 0.1512, 0.11… also “extreme”</p>
-</div>
 </section>
 <section id="section-14" class="slide level2">
 <h2></h2>
-
-<img data-src="7b-freq-inference_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
-<section id="section-15" class="slide level2">
-<h2></h2>
-<p>If the <span class="math inline">\(H_0\)</span> is true what is the probability that we will observe an extremely high or an extremely low sample proportion?</p>
-<p>Probability of observing sample proportion of 0.17 and lower</p>
-<div class="fragment">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">pnorm</span>(<span class="fl">0.17</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.01282473</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2.594241e-146</code></pre>
-</div>
-</div>
-</div>
-<div class="fragment">
+<p>If the <span class="math inline">\(H_0\)</span> is true what is the probability that we will observe an extremely high sample proportion?</p>
 <p>Probability of observing sample proportion of 0.83 and higher</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">pnorm</span>(<span class="fl">0.83</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.01282473</span>, </span>
-<span id="cb21-2"><a href="#cb21-2"></a>      <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">pnorm</span>(<span class="fl">0.83</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.01282473</span>, </span>
+<span id="cb19-2"><a href="#cb19-2"></a>      <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.594241e-146</code></pre>
 </div>
 </div>
-</div>
-</section>
-<section id="p-value" class="slide level2">
-<h2>p-value</h2>
-<p>Adding those up (or you can multiply one of them with 2) we have</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">pnorm</span>(<span class="fl">0.17</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.01282473</span>) <span class="sc">+</span> </span>
-<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">pnorm</span>(<span class="fl">0.83</span>, <span class="at">mean =</span> <span class="fl">0.5</span>, <span class="at">sd =</span> <span class="fl">0.01282473</span>, </span>
-<span id="cb23-3"><a href="#cb23-3"></a>        <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5.188482e-146</code></pre>
-</div>
-</div>
-<div class="fragment">
-<p>p-value = <span class="math inline">\(5.188482 \times 10^{-146}\)</span></p>
-</div>
-<div class="fragment">
 <p>P-value is the probability of observing a sample statistic at least as extreme as the one that has been observed if the null hypothesis were true.</p>
-</div>
 <div class="fragment">
 <p>If p-value is less than 0.05 we reject the null hypothesis.</p>
 </div>
@@ -851,7 +810,7 @@ Dr.&nbsp;Mine Dogucu
 <h2>Decision and Conclusion</h2>
 <p>In the Gallup survey the sample proportion was 0.83.</p>
 <div class="fragment">
-<p>If the null hypothesis ( <span class="math inline">\(H_0 = \pi = 0.5\)</span> ) were true, then it would be quite unlikely (p = <span class="math inline">\(5.188482 \times 10^{-146}\)</span>) to observe a sample proportion that is at least extreme like the one we observed. We consider this “quite unlikely” since p &lt; 0.05.</p>
+<p>If the null hypothesis ( <span class="math inline">\(H_0 = \pi = 0.5\)</span> ) were true, then it would be quite unlikely (p = <span class="math inline">\(2.594241 \times 10^{-146}\)</span>) to observe a sample proportion that is at least extreme like the one we observed. We consider this “quite unlikely” since p &lt; 0.05.</p>
 </div>
 <div class="fragment">
 <p>Since we have observed the sample proportion of 0.83 then we reject the <span class="math inline">\(H_0\)</span>.</p>
@@ -867,7 +826,7 @@ Dr.&nbsp;Mine Dogucu
 <div class="pull-left">
 <p><svg aria-hidden="true" role="img" viewbox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#e56646;overflow:visible;position:relative;"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>Number of successes &gt; 10</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fl">0.83</span><span class="sc">*</span><span class="dv">1520</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fl">0.83</span><span class="sc">*</span><span class="dv">1520</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1261.6</code></pre>
 </div>
@@ -876,7 +835,7 @@ Dr.&nbsp;Mine Dogucu
 <div class="pull-right">
 <p><svg aria-hidden="true" role="img" viewbox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#e56646;overflow:visible;position:relative;"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>Number of failures &gt; 10</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>(<span class="dv">1</span><span class="fl">-0.83</span>)<span class="sc">*</span><span class="dv">1520</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>(<span class="dv">1</span><span class="fl">-0.83</span>)<span class="sc">*</span><span class="dv">1520</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 258.4</code></pre>
 </div>

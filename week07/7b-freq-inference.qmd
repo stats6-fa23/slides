@@ -595,8 +595,8 @@ Do the majority of Americans approve allowing DACA immigrants to become citizens
 
 ## Hypotheses 
 
-$H_0: \pi = 0.5$  
-$H_A: \pi \neq 0.5$
+$H_0: \pi \leq 0.5$  
+$H_A: \pi > 0.5$
 
 
 
@@ -677,52 +677,14 @@ We want to know the probability of observing an extreme sample proportion like o
 
 If our sample proportion is "extreme" then so is 0.90, 0.91, 0.917, 0.9273423 etc. 
 
-. . .
 
-Our sample proportion is 0.83 - 0.5 = 0.33 units away from the null.
-
-. . .
-
-So we will consider 0.5 - 0.33 = 0.17 also an "extreme" sample proportion. 
-
-. . .
-
-This makes 0.16, 0.1512, 0.11... also "extreme" 
 
 
 ##
 
-```{r}
 
-se <- sqrt(0.5*0.5/1520)
-p <- seq(0.1, 0.9, by = 0.0001)
-y <- dnorm(p, mean = 0.5, sd = se)
-data <- tibble(p = p, y = y)
-qplot(p, y, data = data, 
-          geom = "line") +
-  ylab("") +
-    geom_vline(xintercept = 0.83) +
-   annotate(geom = "text", x = 0.78, y = 20, label = "p = 0.83") +
-  geom_vline(xintercept = 0.17) + 
-  annotate(geom = "text", x = 0.21, y = 20, label = "p = 0.17") 
+If the $H_0$ is true what is the probability that we will observe an extremely high sample proportion?
 
-
-```
-
-##
-
-
-If the $H_0$ is true what is the probability that we will observe an extremely high or an extremely low sample proportion?
-
-Probability of observing sample proportion of 0.17 and lower 
-
-. . .
-
-```{r echo = TRUE}
-pnorm(0.17, mean = 0.5, sd = 0.01282473)
-```
-
-. . .
 
 Probability of observing sample proportion of 0.83 and higher 
 
@@ -730,23 +692,6 @@ Probability of observing sample proportion of 0.83 and higher
 pnorm(0.83, mean = 0.5, sd = 0.01282473, 
       lower.tail = FALSE)
 ```
-
-## p-value
-
-
-Adding those up (or you can multiply one of them with 2) we have
-
-```{r echo = TRUE}
-pnorm(0.17, mean = 0.5, sd = 0.01282473) + 
-  pnorm(0.83, mean = 0.5, sd = 0.01282473, 
-        lower.tail = FALSE)
-```
-
-. . .
-
-p-value  = $5.188482 \times 10^{-146}$
-
-. . .
 
 P-value is the probability of observing a sample statistic at least as extreme as the one that has been observed if the null hypothesis were true.
 
@@ -763,7 +708,7 @@ In the Gallup survey the sample proportion was 0.83.
 
 If the null hypothesis (
 $H_0 = \pi = 0.5$
-) were true, then it would be quite unlikely (p = $5.188482 \times 10^{-146}$) to observe a sample proportion that is at least extreme like the one we observed. We consider this "quite unlikely" since p < 0.05.
+) were true, then it would be quite unlikely (p = $2.594241 \times 10^{-146}$) to observe a sample proportion that is at least extreme like the one we observed. We consider this "quite unlikely" since p < 0.05.
 
 
 . . .
