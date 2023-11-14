@@ -23,6 +23,7 @@ format:
 library(bayesrules)
 library(tidyverse)
 library(scales)
+set.seed(84735)
 ```
 
 ```{r}
