@@ -955,18 +955,6 @@ knitr::include_graphics('img/blocking.png')
 Image Copyright Federica Ricci. Used with permission.
 
 
-## A/B testing 
-
-- A/B testing is a randomized experiment that compares two versions (A and B) of a single variable. 
-
-- It is commonly used on measuring online activities such as revenue per user, click through rates for online ads, number of returning users.
-
-. . .
-
-```{r echo = FALSE, fig.align='center', out.width='50%'}
-knitr::include_graphics("img/ab_testing.png")
-```
-
 ## More Vocabulary about Experiments
 
 A __placebo__ is a fake treatment. If a patient shows an improvement by taking a placebo then this is called a __placebo effect__.
