@@ -745,6 +745,81 @@ gestation     0.4059083 0.5226169</code></pre>
 </div>
 <p>Note that the 95% confidence interval for the slope does not contain zero and all the values in the interval are positive indicating a significant positive relationship between gestation and birth weight.</p>
 </section>
+<section id="section-9" class="slide level2">
+<h2></h2>
+<table>
+<thead>
+<tr class="header">
+<th>y</th>
+<th>Response</th>
+<th>Birth weight</th>
+<th>Numeric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>Explanatory</td>
+<td>Smoke</td>
+<td>Categorical</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notation" class="slide level2">
+<h2>Notation</h2>
+<p><span class="math inline">\(y_i = \beta_0 +\beta_1x_i + \epsilon_i\)</span></p>
+<p><span class="math inline">\(\beta_0\)</span> is y-intercept<br>
+<span class="math inline">\(\beta_1\)</span> is slope<br>
+<span class="math inline">\(\epsilon_i\)</span> is error/residual<br>
+<span class="math inline">\(i = 1, 2, ...n\)</span> identifier for each point</p>
+</section>
+<section id="section-10" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>model_s <span class="ot">&lt;-</span> <span class="fu">lm</span>(bwt <span class="sc">~</span> smoke, <span class="at">data =</span> babies)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">tidy</span>(model_s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)   123.       0.649    190.   0       
+2 smoke          -8.94     1.03      -8.65 1.55e-17</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\hat {y}_i = b_0 + b_1 x_i\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = b_0 + b_1 \text{ smoke}_i\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)\)</span></p>
+</section>
+<section id="section-11" class="slide level2">
+<h2></h2>
+<div class="pull-left">
+<p>Expected bwt for a baby with a non-smoker mother</p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123 + (-8.94\times 0)\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123\)</span></p>
+<p><span class="math inline">\(E[bwt_i | smoke_i = 0] = b_0\)</span></p>
+</div>
+<div class="pull-right">
+<p>Expected bwt for a baby with a smoker mother</p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 123 + (-8.94\times 1)\)</span></p>
+<p><span class="math inline">\(\hat {\text{bwt}_i} = 114.06\)</span></p>
+<p><span class="math inline">\(E[bwt_i | smoke_i = 1] = b_0 + b_1\)</span></p>
+</div>
+</section>
+<section id="section-12" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">confint</span>(model_s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                2.5 %     97.5 %
+(Intercept) 121.77391 124.320430
+smoke       -10.96413  -6.911199</code></pre>
+</div>
+</div>
+<p>Note that the confidence interval for the “slope” does not contain 0 and all the values in the interval are negative.</p>
+</section>
 <section id="understanding-relationships" class="slide level2">
 <h2>Understanding Relationships</h2>
 <ul>
@@ -801,7 +876,7 @@ gestation     0.4059083 0.5226169</code></pre>
 <p>When collecting data from human and animal research subjects we need to consider ethics.</p>
 <p>In universities, rights of the human and animal research subjects are protected by the Institutional Review Board (IRB) of each university. If interested (highly recommended) you can read about UCI’s <a href="https://research.uci.edu/compliance/human-research-protections/index.html">Institutional Review Board</a>)</p>
 </section>
-<section id="section-9" class="slide level2">
+<section id="section-13" class="slide level2">
 <h2></h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
 <div class="callout-body">
@@ -859,7 +934,7 @@ gestation     0.4059083 0.5226169</code></pre>
 </ul>
 </div>
 </section>
-<section id="section-10" class="slide level2">
+<section id="section-14" class="slide level2">
 <h2></h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
 <div class="callout-body">
@@ -892,7 +967,7 @@ gestation     0.4059083 0.5226169</code></pre>
 </div>
 </div>
 </section>
-<section id="section-11" class="slide level2">
+<section id="section-15" class="slide level2">
 <h2></h2>
 <p>Assume that the 100 selected students respond.</p>
 <p><strong>Population</strong>: All UCI students<br>
@@ -901,12 +976,12 @@ gestation     0.4059083 0.5226169</code></pre>
 <section id="simple-random-sampling-in-r" class="slide level2">
 <h2>Simple Random Sampling in R</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1"></a><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">3</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt class="fragment" data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dt class="fragment" data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd class="fragment">
-<span data-code-annotation="1" data-code-cell="annotated-cell-6" data-code-lines="1">This allows us to sample 3 numbers from 1 to 100 without replacement, meaning a number can only be selected once.</span>
+<span data-code-lines="1" data-code-annotation="1" data-code-cell="annotated-cell-8">This allows us to sample 3 numbers from 1 to 100 without replacement, meaning a number can only be selected once.</span>
 </dd>
 </dl>
 </div>
@@ -917,7 +992,7 @@ gestation     0.4059083 0.5226169</code></pre>
 <div class="fragment">
 <p>To generalize:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span>N, <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span>N, <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This code will take a random sample of size <span class="math inline">\(n\)</span> from the population consisting of the numbers in the interval <span class="math inline">\([1, N]\)</span></p>
 </div>
@@ -944,7 +1019,7 @@ gestation     0.4059083 0.5226169</code></pre>
 </div>
 </div>
 </section>
-<section id="section-12" class="slide level2">
+<section id="section-16" class="slide level2">
 <h2></h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
 <div class="callout-body">
@@ -956,9 +1031,6 @@ gestation     0.4059083 0.5226169</code></pre>
 </div>
 </div>
 </div>
-</section>
-<section id="quiz-question" class="slide level2">
-<h2>Quiz Question</h2>
 </section>
 <section id="cluster-sampling" class="slide level2">
 <h2>Cluster Sampling</h2>
@@ -1048,7 +1120,7 @@ gestation     0.4059083 0.5226169</code></pre>
 <h2>Relationship between two variables</h2>
 <p>Explanatory variables are denoted by <span class="math inline">\(x\)</span> and the response variable is denoted by <span class="math inline">\(y\)</span>. You can remember this from e<strong>X</strong>planatory variable is <span class="math inline">\(x\)</span>. Exercising may e<strong>X</strong>plain high GPA.</p>
 </section>
-<section id="section-13" class="slide level2">
+<section id="section-17" class="slide level2">
 <h2></h2>
 
 <img data-src="img/confounding.png" style="width:50.0%" class="r-stretch quarto-figure-center"><p>A <strong>confounding variable</strong> (e.g.&nbsp;time management skills) has a correlation with the the explanatory and the response variable.</p>
@@ -1060,7 +1132,7 @@ gestation     0.4059083 0.5226169</code></pre>
 <p>In <strong>randomized experiments</strong>, researchers randomly assign cases to treatments/interventions. In order to establish causal link between variables, we need randomized experiments.</p>
 </div>
 </section>
-<section id="section-14" class="slide level2">
+<section id="section-18" class="slide level2">
 <h2></h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
 <div class="callout-body">
@@ -1084,7 +1156,7 @@ gestation     0.4059083 0.5226169</code></pre>
 </div>
 </div>
 </section>
-<section id="section-15" class="slide level2">
+<section id="section-19" class="slide level2">
 <h2></h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
 <div class="callout-body">

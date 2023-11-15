@@ -21,7 +21,7 @@ format:
 
 ```{r}
 #| echo: false
-options(scipen=0)
+options(scipen=999)
 library(tidyverse)
 library(openintro)
 library(broom)
@@ -494,6 +494,81 @@ confint(model_g)
 
 Note that the 95% confidence interval for the slope does not contain zero and all the values in the interval are positive indicating a significant positive relationship between gestation and birth weight.
 
+##
+
+| y | Response    | Birth weight | Numeric |
+|---|-------------|-----------------|---------|
+| x | Explanatory | Smoke           | Categorical |
+
+
+
+
+## Notation
+
+$y_i = \beta_0 +\beta_1x_i + \epsilon_i$
+
+$\beta_0$ is y-intercept  
+$\beta_1$ is slope  
+$\epsilon_i$ is error/residual  
+$i = 1, 2, ...n$ identifier for each point
+
+
+##
+
+```{r}
+model_s <- lm(bwt ~ smoke, data = babies)
+tidy(model_s)
+```
+
+
+
+
+$\hat {y}_i = b_0 + b_1 x_i$
+
+$\hat {\text{bwt}_i} = b_0 + b_1 \text{ smoke}_i$
+
+$\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)$
+
+##
+
+:::{.pull-left}
+
+Expected bwt for a baby with a non-smoker mother
+
+$\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)$
+
+$\hat {\text{bwt}_i} = 123 + (-8.94\times 0)$
+
+$\hat {\text{bwt}_i} = 123$
+
+$E[bwt_i | smoke_i = 0] = b_0$
+
+
+:::
+
+:::{.pull-right}
+
+Expected bwt for a baby with a smoker mother
+
+$\hat {\text{bwt}_i} = 123 + (-8.94\text{ smoke}_i)$
+
+$\hat {\text{bwt}_i} = 123 + (-8.94\times 1)$
+
+$\hat {\text{bwt}_i} = 114.06$
+
+$E[bwt_i | smoke_i = 1] = b_0 + b_1$
+
+:::
+
+##
+
+```{r}
+confint(model_s)
+```
+
+Note that the confidence interval for the "slope" does not contain 0 and all the values in the interval are negative. 
+
+
 ## Understanding Relationships
 
 - Just because we observe a significant relationship between $x$ and $y$, it does not mean that $x$ causes $y$.
@@ -687,8 +762,6 @@ It is possible that those 14 who did not respond
 A social media company shows a survey to some its users on the timeline. Many users ignore the survey and do not take it. There is a high non-response rate and thus the results cannot be generalized to the population.
 
 :::
-
-## Quiz Question
 
 ## Cluster Sampling 
 
