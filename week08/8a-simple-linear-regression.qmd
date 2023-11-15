@@ -1,0 +1,904 @@
+---
+title: "Simple Linear Regression, Sampling, and Study Design"
+author: "Dr. Mine Dogucu"
+execute:
+  echo: true
+format: 
+  revealjs:
+    footer: "[introdata.science](https://introdata.science)"
+    slide-number: true
+    incremental: true
+    theme: ["../templates/slide-style.scss"]
+    logo: "https://www.introdata.science/img/logo.png"
+    title-slide-attributes: 
+      data-background-image: "https://www.introdata.science/img/logo.png"
+      data-background-size: 5%
+      data-background-position: 50% 85%
+    include-after-body: "../templates/clean_title_page.html"
+---
+
+## 
+
+```{r}
+#| echo: false
+options(scipen=0)
+library(tidyverse)
+library(openintro)
+library(broom)
+theme_set(theme_bw(base_size = 22))
+```
+
+## Data `babies` in `openintro` package
+
+```{r echo = FALSE}
+
+glimpse(babies)
+
+```
+
+##  Baby Weights
+
+
+```{r}
+#| output-location: column
+
+ggplot(babies, 
+       aes(x = gestation, y = bwt)) +
+  geom_point()
+
+```
+
+
+##  Baby Weights
+
+
+```{r }
+#| output-location: column
+
+ggplot(babies,
+         aes(x = gestation, y = bwt)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) 
+
+```
+
+`lm` stands for linear model  
+`se` stands for standard error
+
+
+## 
+
+<center>
+
+
+
+| y | Response    | Birth weight | Numeric |
+|---|-------------|-----------------|---------|
+| x | Explanatory | Gestation           | Numeric |
+
+</center>
+
+
+## Linear Equations Review
+
+
+:::{.pull-left}
+
+Recall from your previous math classes
+
+$y = mx + b$
+
+where $m$ is the slope and $b$ is the y-intercept
+
+e.g. $y = 2x -1$
+:::
+
+. . .
+
+
+
+:::{.pull-right}
+
+```{r echo = FALSE, fig.height = 5, message = FALSE}
+x <- c(0, 1, 2, 3, 4, 5)
+y <- c(-1, 1, 3, 5, 7, 9)
+
+as.data.frame(x = x, y = y) %>% 
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point() +
+  scale_y_continuous(breaks = c(-1, 1, 3, 5, 7, 9)) +
+  scale_x_continuous(breaks = c(0, 1, 2, 3, 4, 5)) +
+  geom_smooth(method = "lm", se = FALSE)
+
+```
+
+Notice anything different between baby weights plot and this one?
+:::
+
+##
+
+:::{.pull-left}
+
+**Math** class
+
+$y = b + mx$
+
+$b$ is y-intercept  
+$m$ is slope  
+:::
+
+
+:::{.pull-left}
+
+**Stats** class
+
+$y_i = \beta_0 +\beta_1x_i + \epsilon_i$
+
+$\beta_0$ is y-intercept  
+$\beta_1$ is slope  
+$\epsilon_i$ is error/residual  
+$i = 1, 2, ...n$ identifier for each point
+:::
+
+##
+
+```{r}
+model_g <- lm(bwt ~ gestation, data = babies)
+
+```
+
+`lm` stands for linear model. We are fitting a linear regression model. Note that the variables are entered in y ~ x order.
+
+
+
+
+##
+
+```{r}
+broom::tidy(model_g)
+```
+
+. . .
+
+$\hat {y}_i = b_0 + b_1 x_i$
+
+$\hat {\text{bwt}_i} = b_0 + b_1 \text{ gestation}_i$
+
+$\hat {\text{bwt}_i} = -10.1 + 0.464\text{ gestation}_i$
+
+
+## Expected bwt for a baby with 300 days of gestation
+
+$\hat {\text{bwt}_i} = -10.1 + 0.464\text{ gestation}_i$
+
+$\hat {\text{bwt}} = -10.1 + 0.464 \times 300$
+
+$\hat {\text{bwt}} =$ `r -10.1 + 0.464*300`
+
+
+For a baby with 300 days of gestation the expected birth weight is `r -10.1 + 0.464*300` ounces.
+
+
+
+## Interpretation of estimates
+
+:::{.pull-left}
+```{r echo = FALSE, fig.align='center', message=FALSE, warning = FALSE, fig.height = 4}
+babies %>% 
+  ggplot() +
+  aes(x = gestation, y = bwt) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) 
+    
+```
+
+$b_1 = 0.464$ which means for one unit(day) increase in gestation period the expected increase in birth weight is 0.464 ounces.
+
+:::
+
+. . .
+
+:::{.pull-right}
+```{r echo = FALSE, fig.align='center', message=FALSE, warning = FALSE, fig.height = 4}
+babies %>% 
+  ggplot() +
+  aes(x = gestation, y = bwt) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(0, 360) +
+  ylim(-10, 180) +
+  geom_abline(slope = 0.459, intercept = -8.76)
+  
+  
+```
+
+$b_0 = -10.1$ which means for gestation period of 0 days the expected birth weight is -10.1 ounces!!!!!!!!
+(does NOT make sense)
+:::
+
+
+
+## Extrapolation
+
+- There is no such thing as 0 days of gestation.
+
+. . .
+
+- Birth weight cannot possibly be -10.1 ounces.
+
+. . .
+
+- Extrapolation happens when we use a model outside the range of the x-values that are observed. After all, we cannot really know how the model behaves (e.g. may be non-linear) outside of the scope of what we have observed. 
+
+
+## Baby number 148
+
+:::{.pull-left}
+
+```{r}
+babies %>% 
+  filter(case == 148) %>% 
+  select(bwt, gestation)
+
+```
+
+:::
+
+:::{.pull-right}
+
+```{r echo = FALSE, message = FALSE, fig.height=5, warning = FALSE}
+
+baby_148 <- subset(babies, case == 148)
+
+babies %>% 
+  ggplot() +
+  aes(x = gestation, y = bwt) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(data = baby_148, color = "red")
+```
+
+
+:::
+
+
+
+## Baby #148
+
+:::{.pull-left}
+
+**Expected**
+
+$\hat y_{148} = b_0 +b_1x_{148}$
+
+$\hat y_{148} = -10.1 + 0.464\times300$
+
+$\hat y_{148}$ = `r -10.1 + 0.464*300`
+
+
+:::
+
+:::{.pull-left}
+
+**Observed**
+
+$y_{148} =$ 160
+
+:::
+
+
+
+## Residual for `i = 148`
+
+:::{.pull-left}
+
+```{r echo = FALSE, fig.align='center', message=FALSE, warning = FALSE, fig.height = 4}
+babies %>% 
+  ggplot() +
+  aes(x = gestation, y = bwt) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_point(data = baby_148, color = "red") +
+  geom_segment(x = 300, xend = 300, y = 128.94, yend = 160, color = "red")
+```
+
+
+
+:::
+
+:::{.pull-right}
+
+$y_{148} = 160$
+
+$\hat y_{148}$ = `r -10.1 + 0.464*300`
+
+$e_{148} = y_{148} - \hat y_{148}$
+
+$e_{148} =$ `r 160 -(-10.1 + 0.464*300)`
+
+
+:::
+
+
+
+## Least Squares Regression 
+
+The goal is to minimize 
+
+$$e_1^2 + e_2^2 + ... + e_n^2$$
+
+. . .
+
+which can be rewritten as 
+
+$$\sum_{i = 1}^n e_i^2$$
+
+
+
+## Conditions for Least Squares Regression
+
+- Linearity
+
+- Normality of Residuals 
+
+- Constant Variance
+
+- Independence
+
+
+##
+
+:::{.pull-left}
+
+**Linear**
+```{r  echo = FALSE, message = FALSE}
+set.seed(84735)
+x <- seq(-2, 2, by = 0.01)
+y <- 4*x + 5 + rnorm(length(x), 0 , 1.5)
+
+data_good <- data.frame(x = x, y = y) %>%   sample_n(50)
+
+data_good %>% 
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+:::
+
+:::{.pull-right}
+
+**Non-linear**
+
+```{r  echo = FALSE, message = FALSE}
+set.seed(84735)
+x <- seq(-2, 2, by = 0.01)
+y <- 3*x^2 + x + 5 + rnorm(length(x), 0 , 2)
+
+data_bad<- data.frame(x = x, y = y) %>% sample_n(50)
+
+data_bad %>% 
+  ggplot() +
+  aes(x = x, y = y) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  stat_function(fun = function(x)3*x^2 + x + 5 )
+```
+
+:::
+
+
+##
+
+:::{.pull-left}
+
+**Nearly normal**
+
+```{r echo = FALSE, message = FALSE}
+model_good <- lm(y ~ x, data = data_good)
+
+data_good <- 
+  data_good %>%
+  sample_n(50) %>% 
+  modelr::add_residuals(model_good) 
+
+data_good %>% 
+  ggplot(aes(x = resid)) +
+  geom_density()
+
+```
+
+:::
+
+:::{.pull-right}
+
+**Not normal**
+
+
+```{r echo = FALSE, message = FALSE}
+model_bad <- lm(y ~ x, data = data_bad)
+
+data_bad <- 
+  data_bad %>% 
+  modelr::add_residuals(model_bad) 
+
+data_bad %>% 
+  ggplot(aes(x = resid)) +
+  geom_density()
+
+```
+
+:::
+
+##
+
+:::{.pull-left}
+
+**Constant Variance**
+
+```{r echo = FALSE, message = FALSE}
+
+data_good %>% 
+  ggplot(aes(x = x, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0)
+
+```
+
+:::
+
+:::{.pull-right}
+
+**Non-constant variance**
+
+
+```{r echo = FALSE, message = FALSE}
+
+
+data_bad %>% 
+  ggplot(aes(x = x, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0)
+
+```
+
+:::
+
+
+## Independence
+
+Harder to check because we need to know how the data were collected.
+
+. . .
+
+In the description of the dataset it says _[a study]considered all pregnancies between 1960 and 1967 among women in the Kaiser Foundation Health Plan in the San Francisco East Bay area._
+
+. . .
+
+It is possible that babies born in the same hospital may have similar birth weight. 
+
+
+##
+
+Correlated data examples: patients within hospitals, students within schools, people within neighborhoods, time-series data. 
+
+
+
+## Inference: Confidence Interval (theoretical)
+
+```{r}
+confint(model_g)
+```
+
+Note that the 95% confidence interval for the slope does not contain zero and all the values in the interval are positive indicating a significant positive relationship between gestation and birth weight.
+
+## Understanding Relationships
+
+- Just because we observe a significant relationship between $x$ and $y$, it does not mean that $x$ causes $y$.
+
+- Just because we observe a significant relationship in a sample that does not mean the findings will generalize to the population. 
+
+- For these we need to understand sampling and study design. 
+
+```{r echo = FALSE, message = FALSE}
+library(tidyverse)
+library(gridExtra)
+options(scipen = 999)
+```
+
+# Sampling
+
+## Research question
+
+Every research project aims to answer a research question (or multiple questions).
+
+::: {.callout-tip icon=false}
+## Example
+Do UCI students who exercise regularly have higher GPA?
+::: 
+
+We will use this research question throughout the examples in the lecture.
+
+## Population
+
+Each research question aims to examine a __population__. 
+
+::: {.callout-tip icon=false}
+## Example
+
+Population for this research question is UCI students.
+
+:::
+
+## Data Collection
+
+Data are collected to answer research questions. 
+There are different methods to collect data.
+For instance, data can be collected 
+
+- in-person or online (if collecting from human subjects)
+- on-site or off-site (e.g. rain fall measures vs. moon image tracking)
+- with different tools such as surveys, motion sensors (e.g. marathon finish lines) 
+
+## Data Collection - Ethics
+
+When collecting data from human and animal research subjects we need to consider ethics. 
+
+In universities, rights of the human and animal research subjects are protected by the Institutional Review Board (IRB) of each university. 
+If interested (highly recommended) you can read about UCI's [Institutional Review Board](https://research.uci.edu/compliance/human-research-protections/index.html))
+
+##
+
+::: {.callout-tip icon=false}
+## Example
+
+Consider that we design a survey with the following questions to study the research question.
+
+- Do you exercise at least once every week?
+
+- What is your GPA?
+
+:::
+
+## Sampling
+
+A population is a collection of elements which the research question aims to study. 
+However it is often costly and sometimes impossible to study the whole population. 
+Often a subset of the population is selected to be studied. Sample is the the subset of the population that is studied. 
+The goal is to have a sample that is __representative__ of the population so that the findings of the study can generalize to the population.
+
+. . .
+
+::: {.callout-tip icon=false}
+
+## Example
+
+Since it would be almost impossible to give the survey to ALL UCI students, we can give it to a sample of students.
+
+:::
+
+
+There are different sampling methods to consider.
+
+## Convenience (Availability) Sampling
+
+Convenience sampling occurs when a specific sample is selected because the sample is easy to access.
+
+::: {.callout-tip icon=false}
+
+## Example
+
+- Stand in front of Langson Library
+- Give the survey to 100 UCI students
+
+:::
+
+. . .
+
+This could introduce (sampling) __bias__ and the findings may not generalize to the population. It is possible that those in front of the library
+
+- may study more and thus may have higher GPA.
+- may be more active than those who study at home/dorm.
+
+## 
+
+::: {.callout-tip icon=false}
+
+## Additional Example
+
+A scientist is interested in counting the number of different species of bacteria in San Diego Creek. She takes a bucket of water from San Diego Creek where she happens to be standing and counts the different specifies of bacteria. The bacteria in the bucket make up the __sample__ and the bacteria in San Diego Creek make up the __population__. The scientist is using the convenience sampling method.
+
+:::
+
+## Simple Random Sample
+
+When simple random sampling technique is used any element of the population has an equal chance of being selected to the sample. 
+
+::: {.callout-tip icon=false}
+
+## Example
+
+The researcher can    
+
+- reach out to the registrar to get student emails;  
+- randomly select 100 students; 
+- email them the survey.
+
+:::
+
+## 
+
+Assume that the 100 selected students respond.
+
+**Population**: All UCI students  
+**Sample**: 100 students who have responded
+
+
+## Simple Random Sampling in R
+
+```{r}
+sample(1:100, 3, replace = FALSE) # <1>
+```
+
+1. This allows us to sample 3 numbers from 1 to 100 without replacement, meaning a number can only be selected once.
+
+. . . 
+
+
+To generalize:
+
+```{r}
+#| eval: false
+sample(x = 1:N, size = n, replace = FALSE)
+```
+
+This code will take a random sample of size $n$ from the population consisting of the numbers in the interval $[1, N]$
+
+. . .
+
+Side note: This is not truly random but that's beyond the scope of this class. Here is a [fun (short) reading](https://engineering.mit.edu/engage/ask-an-engineer/can-a-computer-generate-a-truly-random-number/) about it. Philosophers also discuss if [true randomness exists or not](https://philosophy.stackexchange.com/questions/29364/does-true-randomness-actually-exist). 
+
+
+## Non-response Bias
+
+Even when simple random sampling is used, if participants are unwilling to participate in studies then the results can have **nonresponse bias**.
+
+::: {.callout-tip icon=false}
+
+## Example
+
+It is unlikely that 100 students will respond. Assume that 86 respond. 
+
+It is possible that those 14 who did not respond
+
+- may be busy exercising and did not have the time to respond.
+- may be busy studying and did not have the time to respond. 
+
+:::
+
+
+##
+
+::: {.callout-tip icon=false}
+## Additional Example
+
+A social media company shows a survey to some its users on the timeline. Many users ignore the survey and do not take it. There is a high non-response rate and thus the results cannot be generalized to the population.
+
+:::
+
+## Quiz Question
+
+## Cluster Sampling 
+
+In cluster sampling the population is divided into group (i.e, clusters). The sample consists of elements in randomly selected clusters. 
+
+. . .
+
+::: {.callout-tip icon=false}
+
+## Example
+
+The researchers may get a list of classes taught at UCI. They randomly select 10 classes. All the students in those 10 classes will be in the sample.
+
+:::
+
+## Stratified Sampling 
+
+In stratified sampling the population is first divided into groups (i.e., stratas) and then the sample is selected randomly within each strata.
+
+. . .
+
+::: {.callout-tip icon=false}
+
+## Example
+
+The researchers suspect that exercising patterns might be different across different class years. Thus they want to make sure that the sample includes first-years, sophomores, juniors, and seniors. They get a list of students with class year information from the registrar. They then randomly select 25 students who are first years, 25 sophomores, 25 juniors, and 25 seniors.
+
+:::
+
+# Study Design
+
+## Anecdotal Evidence
+
+Anecdotal evidence is an observation that is not systematic and haphazard. 
+
+. . .
+
+::: {.callout-tip icon=false}
+
+## Example
+
+We might meet a junior student who got 100 points in all UCI exams, homework assignments, and quizzes that they have taken and they say that they exercise regularly. Even though the data are factually correct (i.e., high GPA and regular exercise routine.) this does not
+
+:::
+
+. . .
+
+Anecdotal evidence is not a scientific method to answer research questions. We need rigorously designed studies to make generalizations and/or to establish causal relationships.
+
+## Observational Study
+
+In observational studies, researchers study the research question without exposing the cases (or subset of a sample) to any treatment or intervention. In observational studies causal relationships between variables cannot be established.
+
+
+::: {.callout-tip icon=false}
+
+## Example
+
+Based on the survey, even if we observe that UCI students who exercise regularly have higher GPA, we cannot conclude that exercising regularly increases GPA.
+
+:::
+
+
+## Relationship between two variables
+
+If two variables are related to each other in some way we would call them __associated__.
+
+If two variables are not related to each other in any way we would call them __independent__.
+
+
+
+## Relationship between two variables
+
+When we examine the relationship between two variables, we often want to know if the relationship between them is causal. In other words, does one variable cause the other? For instance, is exercising the reason for higher GPA? We don't know!
+
+When we suspect that two variables have a causal relationship we can say
+
+The __explanatory variable__ (e.g. exercising) might causally affect the __response variable__ (e.g. GPA).
+
+. . .
+
+Relationship between two variables does not imply one causes the other. 
+
+## Relationship between two variables
+
+Explanatory variables are denoted by $x$ and the response variable is denoted by $y$. You can remember this from e**X**planatory variable is $x$. Exercising may e**X**plain high GPA. 
+
+##
+
+
+```{r echo = FALSE, fig.align='center', out.width='50%'}
+knitr::include_graphics("img/confounding.png")
+```
+
+A __confounding variable__ (e.g. time management skills) has a correlation with the the explanatory and the response variable.
+
+
+## Experiment Design
+
+In __experiments__, researchers assign cases to treatments/interventions.
+
+. . .
+
+In __randomized experiments__, researchers randomly assign cases  to treatments/interventions. In order to establish causal link between variables, we need randomized experiments. 
+
+##
+
+::: {.callout-tip icon=false}
+
+## Example 
+
+~~Do UCI students who exercise regularly have higher GPA?~~
+
+Does exercising regularly increase GPA for UCI students?
+
+
+
+```{r echo=FALSE, out.width='70%', fig.align='center'}
+knitr::include_graphics('img/experiment.png')
+```
+
+Image Copyright Derenik Haghverdian. Used with permission
+
+:::
+
+
+##
+
+::: {.callout-tip icon=false}
+
+## Note
+
+Random sampling and random assignment (i.e., random allocation) serve different purposes. 
+
+:::{.nonincremental}
+
+::::{.columns}
+
+:::{.column width="50%"}
+
+
+
+### Random sampling
+
+- method of choosing sample from the population
+
+- the goal is to establish generalizability
+
+
+:::
+
+:::{.column width="50%"}
+
+### Random allocation
+
+- method of assigning the sample to different treatment groups
+
+- the goal is to establish causality.
+:::
+
+::::
+
+:::
+
+:::
+
+## Blocking
+
+A doctor has developed a drug called drug `i.d.s.` to treat some disease. She wants to know if patients who take drug `i.d.s.` is free of the disease for at least a year.
+
+. . .
+
+The doctor suspects that the drug may affect adults and kids differently.
+
+. . .
+
+If researchers suspect that the an additional variable that may influence the response variable then they may use __blocks__.
+
+
+
+## Blocking
+
+
+```{r}
+#| echo: false
+#| out-width: 80%
+#| fig-align: center
+knitr::include_graphics('img/blocking.png')
+```
+
+Image Copyright Federica Ricci. Used with permission.
+
+
+## A/B testing 
+
+- A/B testing is a randomized experiment that compares two versions (A and B) of a single variable. 
+
+- It is commonly used on measuring online activities such as revenue per user, click through rates for online ads, number of returning users.
+
+. . .
+
+```{r echo = FALSE, fig.align='center', out.width='50%'}
+knitr::include_graphics("img/ab_testing.png")
+```
+
+## More Vocabulary about Experiments
+
+A __placebo__ is a fake treatment. If a patient shows an improvement by taking a placebo then this is called a __placebo effect__.
+
+. . .
+
+In __blind__ studies, patients do not know what treatment they receive. In __double blind__ studies patients who receive and the doctors who provide the treatment do not know the type of the treatment. 
+
