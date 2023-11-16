@@ -392,7 +392,7 @@ y <- dnorm(z)
 data <- tibble(z = z, y = y)
 qplot(z, y, data = data, 
           geom = "line") +
-  geom_ribbon(data = subset(data, z > -1.64 & z <1.64),
+  geom_ribbon(data = subset(data, z > -1.96 & z <1.96),
                   aes(ymax = y), 
                   ymin = 0,
                   fill = "#e56646", 
@@ -717,7 +717,7 @@ Since we have observed the sample proportion of 0.83 then we reject the $H_0$.
 
 . . .
 
-We conclude that the population proportion of Americans who approve allowing DACA immigrants to become citizens is different than 0.5.
+We conclude that the population proportion of Americans who approve allowing DACA immigrants to become citizens is higher than 0.5.
 
 
 ## Conditions
