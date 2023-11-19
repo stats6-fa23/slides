@@ -56,7 +56,7 @@ ggplot(babies,
 #| output-location: column
 
 ggplot(babies,
-         aes(x = gestation, y = bwt)) +
+       aes(x = gestation, y = bwt)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) 
 
