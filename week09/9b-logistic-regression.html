@@ -455,6 +455,9 @@ $ years_experience  &lt;int&gt; 6, 6, 6, 6, 22, 6, 5, 21, 3, 6, 8, 8, 4, 4, 5, 4
 $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chicago…</code></pre>
 </div>
 </div>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
 <p>Response variable: <code>received_callback</code></p>
 <div class="pull-left">
 <div class="cell">
@@ -505,7 +508,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 <p>Note that log is natural log and not base 10. This is also the case for the <code>log()</code> function in R.</p>
 </div>
 </section>
-<section id="section-1" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <p><strong>Probability</strong> <span class="math inline">\(\pi_i\)</span> Probability of receiving a callback.</p>
 <div class="fragment">
@@ -515,7 +518,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 <p><strong>Logit</strong> <span class="math inline">\(log(\frac{\pi_i}{1-\pi_i})\)</span> Logit of receiving a callback.</p>
 </div>
 </section>
-<section id="section-2" class="slide level2">
+<section id="section-3" class="slide level2">
 <h2></h2>
 
 <img data-src="9b-logistic-regression_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch quarto-figure-center"></section>
@@ -562,7 +565,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 <p>Probability of receiving a callback when the candidate has a white sounding name is 0.0965092.</p>
 </section>
-<section id="section-3" class="slide level2">
+<section id="section-4" class="slide level2">
 <h2></h2>
 <div class="pull-left">
 <div class="cell">
@@ -607,7 +610,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 </div>
 </section>
-<section id="section-4" class="slide level2">
+<section id="section-5" class="slide level2">
 <h2></h2>
 <div class="pull-left">
 <div class="cell" data-layout-align="center">
@@ -638,7 +641,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 </div>
 </section>
-<section id="section-5" class="slide level2">
+<section id="section-6" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>model_r <span class="ot">&lt;-</span> <span class="fu">glm</span>(received_callback <span class="sc">~</span> race,</span>
@@ -657,7 +660,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 <p><span class="math inline">\(log(\frac{\hat \pi_i}{1-\hat \pi_i}) = -2.67 + 0.438\times racewhite_i\)</span></p>
 </section>
-<section id="section-6" class="slide level2">
+<section id="section-7" class="slide level2">
 <h2></h2>
 <table>
 <thead>
@@ -682,7 +685,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </tbody>
 </table>
 </section>
-<section id="section-7" class="slide level2">
+<section id="section-8" class="slide level2">
 <h2></h2>
 <p>We will consider years of experience as an explanatory variable. Normally, we would also include race in the model and have multiple explanatory variables, however, for learning purposes, we will keep the model simple.</p>
 <div class="cell">
@@ -701,7 +704,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 </div>
 </section>
-<section id="section-8" class="slide level2">
+<section id="section-9" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>model_y_summary <span class="ot">&lt;-</span> <span class="fu">tidy</span>(model_y)</span>
@@ -756,7 +759,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 <p><span class="math inline">\(\hat\pi_i = \frac{e^{-2.76 + 0.0391 \times 1}}{1+e^{-2.76 + 0.0391 \times 1}} = 0.0618\)</span></p>
 </div>
 </section>
-<section id="section-9" class="slide level2">
+<section id="section-10" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>model_ryc <span class="ot">&lt;-</span> <span class="fu">glm</span>(received_callback <span class="sc">~</span> race <span class="sc">+</span> </span>
@@ -765,7 +768,7 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 <span id="cb35-4"><a href="#cb35-4"></a>               <span class="at">family =</span> binomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-10" class="slide level2">
+<section id="section-11" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">tidy</span>(model_ryc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -780,15 +783,139 @@ $ job_city          &lt;chr&gt; "Chicago", "Chicago", "Chicago", "Chicago", "Chi
 </div>
 </div>
 </section>
-<section id="section-11" class="slide level2">
+<section id="section-12" class="slide level2">
 <h2></h2>
 <p>The estimated probability that a Black candidate with 10 years of experience, residing in Boston, would receive a callback.</p>
 <p><span class="math inline">\(\large{\hat\pi_i = \frac{e^{-2.78 + (0.0440 \times 0) + (0.0332\times10) + (-0.0329\times 0)}}{1+e^{-2.78 + (0.0440 \times 0) + (0.0332\times10) + (-0.0329\times 0)}} = 0.0796}\)</span></p>
 </section>
-<section id="section-12" class="slide level2">
+<section id="section-13" class="slide level2">
 <h2></h2>
 <p>We have used the data for educational purposes. The original study considers many other variables that may influence whether someone receives a callback or not. Read the original study for other considerations.</p>
 <p><a href="https://www.nber.org/papers/w9873">Are Emily and Greg More Employable than Lakisha and Jamal? A Field Experiment on Labor Market Discrimination</a>.</p>
+</section>
+<section id="model-evaluation" class="slide level2">
+<h2>Model Evaluation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>babies <span class="ot">&lt;-</span> babies <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2"></a>  <span class="fu">mutate</span>(<span class="at">low_bwt =</span> <span class="fu">case_when</span>(bwt <span class="sc">&lt;</span> <span class="dv">88</span> <span class="sc">~</span> <span class="cn">TRUE</span>,</span>
+<span id="cb38-3"><a href="#cb38-3"></a>                             bwt <span class="sc">&gt;=</span> <span class="dv">88</span><span class="sc">~</span> <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-4"><a href="#cb38-4"></a>  <span class="fu">drop_na</span>(gestation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-14" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>model_g <span class="ot">&lt;-</span> <span class="fu">glm</span>(low_bwt <span class="sc">~</span> gestation, </span>
+<span id="cb39-2"><a href="#cb39-2"></a>               <span class="at">data =</span> babies,</span>
+<span id="cb39-3"><a href="#cb39-3"></a>               <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-15" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="fu">tidy</span>(model_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  17.5      2.24         7.82 5.11e-15
+2 gestation    -0.0758   0.00846     -8.96 3.27e-19</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\hat p = \frac{\exp(b_0 +b_1x)}{1+\exp(b_0 + b_1x)}\)</span></p>
+<p><span class="math inline">\(\hat p\)</span> when gestation is 284 = <span class="math inline">\(\frac{\exp(17.5 -0.0758 \cdot 284)}{1+\exp(17.5 -0.0758 \cdot 284)} = \frac{\exp(-4.0272)}{1+ \exp(-4.0272)} = 0.01751203\)</span></p>
+</section>
+<section id="section-16" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>babies <span class="ot">&lt;-</span> babies <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2"></a>  <span class="fu">add_predictions</span>(model_g) </span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="fu">select</span>(babies, pred) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,223 × 1
+     pred
+    &lt;dbl&gt;
+ 1 -4.02 
+ 2 -3.87 
+ 3 -3.64 
+ 4 -3.87 
+ 5 -4.17 
+ 6 -0.986
+ 7 -1.06 
+ 8 -4.40 
+ 9 -5.15 
+10 -9.10 
+# ℹ 1,213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="section-17" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>babies <span class="ot">&lt;-</span> babies <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2"></a>  <span class="fu">mutate</span>(<span class="at">pred_p =</span> <span class="fu">exp</span>(pred)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(pred)))</span>
+<span id="cb44-3"><a href="#cb44-3"></a><span class="fu">select</span>(babies, pred, pred_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,223 × 2
+     pred   pred_p
+    &lt;dbl&gt;    &lt;dbl&gt;
+ 1 -4.02  0.0177  
+ 2 -3.87  0.0205  
+ 3 -3.64  0.0256  
+ 4 -3.87  0.0205  
+ 5 -4.17  0.0152  
+ 6 -0.986 0.272   
+ 7 -1.06  0.257   
+ 8 -4.40  0.0122  
+ 9 -5.15  0.00574 
+10 -9.10  0.000112
+# ℹ 1,213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="section-18" class="slide level2">
+<h2></h2>
+</section>
+<section id="cutoff" class="slide level2">
+<h2>Cutoff</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>babies <span class="ot">&lt;-</span> babies <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2"></a>  <span class="fu">mutate</span>(<span class="at">pred_y =</span> <span class="fu">case_when</span>(pred_p <span class="sc">&lt;</span> <span class="fl">0.5</span> <span class="sc">~</span> <span class="cn">FALSE</span>, </span>
+<span id="cb46-3"><a href="#cb46-3"></a>                           pred_p <span class="sc">&gt;=</span> <span class="fl">0.5</span> <span class="sc">~</span> <span class="cn">TRUE</span>))</span>
+<span id="cb46-4"><a href="#cb46-4"></a><span class="fu">select</span>(babies, low_bwt, pred, pred_p, pred_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,223 × 4
+   low_bwt   pred   pred_p pred_y
+   &lt;lgl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;lgl&gt; 
+ 1 FALSE   -4.02  0.0177   FALSE 
+ 2 FALSE   -3.87  0.0205   FALSE 
+ 3 FALSE   -3.64  0.0256   FALSE 
+ 4 FALSE   -3.87  0.0205   FALSE 
+ 5 FALSE   -4.17  0.0152   FALSE 
+ 6 FALSE   -0.986 0.272    FALSE 
+ 7 FALSE   -1.06  0.257    FALSE 
+ 8 FALSE   -4.40  0.0122   FALSE 
+ 9 FALSE   -5.15  0.00574  FALSE 
+10 FALSE   -9.10  0.000112 FALSE 
+# ℹ 1,213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="confusion-matrix" class="slide level2">
+<h2>Confusion Matrix</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>janitor<span class="sc">::</span><span class="fu">tabyl</span>(babies, low_bwt, pred_y) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="#cb48-2"></a>  janitor<span class="sc">::</span><span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> low_bwt FALSE TRUE Total
+   FALSE  1161    5  1166
+    TRUE    53    4    57
+   Total  1214    9  1223</code></pre>
+</div>
+</div>
+<p><strong>Sensitivity</strong> (true-positive rate): 4/57 = 0.0702<br>
+<strong>Specificity</strong> (true-negative rate): 1161/1166 = 0.9957<br>
+<strong>Accuracy</strong>: (1161+4)/1223 = 0.9526</p>
 
 <img src="https://www.introdata.science/img/logo.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://introdata.science">introdata.science</a></p>

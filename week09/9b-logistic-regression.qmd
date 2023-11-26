@@ -41,6 +41,7 @@ When the response variable is binary a logistic regression model can be utilized
 library(tidyverse)
 library(broom)
 library(openintro)
+library(modelr)
 theme_set(theme_gray(base_size = 18))
 ```
 
@@ -79,6 +80,7 @@ glimpse(resume)
 ```
 
 
+##
 
 Response variable: `received_callback`
 
@@ -425,3 +427,70 @@ We have used the data for educational purposes.
 The original study considers many other variables that may influence whether someone receives a callback or not. Read the original study for other considerations.
 
 [Are Emily and Greg More Employable than Lakisha and Jamal? A Field Experiment on Labor Market Discrimination](https://www.nber.org/papers/w9873). 
+
+## Model Evaluation
+
+```{r}
+babies <- babies %>% 
+  mutate(low_bwt = case_when(bwt < 88 ~ TRUE,
+                             bwt >= 88~ FALSE)) %>% 
+  drop_na(gestation)
+```
+
+##
+
+```{r}
+model_g <- glm(low_bwt ~ gestation, 
+               data = babies,
+               family = "binomial")
+```
+
+##
+
+```{r}
+tidy(model_g)
+```
+
+$\hat p = \frac{\exp(b_0 +b_1x)}{1+\exp(b_0 + b_1x)}$
+
+$\hat p$ when gestation is 284 = $\frac{\exp(17.5 -0.0758 \cdot 284)}{1+\exp(17.5 -0.0758 \cdot 284)} = \frac{\exp(-4.0272)}{1+ \exp(-4.0272)} = 0.01751203$
+
+##
+
+```{r}
+babies <- babies %>% 
+  add_predictions(model_g) 
+select(babies, pred) 
+```
+
+##
+
+```{r}
+babies <- babies %>% 
+  mutate(pred_p = exp(pred)/(1+exp(pred)))
+select(babies, pred, pred_p)
+```
+
+##
+
+## Cutoff 
+
+```{r}
+babies <- babies %>% 
+  mutate(pred_y = case_when(pred_p < 0.5 ~ FALSE, 
+                           pred_p >= 0.5 ~ TRUE))
+select(babies, low_bwt, pred, pred_p, pred_y)
+```
+
+
+
+## Confusion Matrix
+
+```{r}
+janitor::tabyl(babies, low_bwt, pred_y) %>% 
+  janitor::adorn_totals(c("row", "col"))
+```
+
+**Sensitivity** (true-positive rate): 4/57 = 0.0702  
+**Specificity** (true-negative rate): 1161/1166 = 0.9957  
+**Accuracy**: (1161+4)/1223 = 0.9526
